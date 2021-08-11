@@ -1,6 +1,7 @@
 <template>
     <div class="home">
         <TopNav />
+		<router-view></router-view>
     </div>
 </template>
 
