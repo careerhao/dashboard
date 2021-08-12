@@ -9,12 +9,15 @@ export default new Router({
       		path: '/',
 			redirect: 'projects', 
 			component: () => import('@/views/Home.vue'),
+			meta: {
+				title: 'Projects',
+			  },
 			children: [
 				{
 					path: 'projects',
 					props: true,
-					name: 'projectHome',
-					component: () => import('@/views/project/Root.vue'),
+					name: 'projectRoot',
+					component: () => import('@/views/project/ProjectRoot.vue'),
 					children: [
 					//   {
 					// 	path: ':projectId',
@@ -24,10 +27,36 @@ export default new Router({
 				}
 			]
 		},
-    	{
+		{
+		  path: '/about',
+		  redirect: 'about', 
+		  component: () => import('@/views/Home.vue'),
+		  children: [
+			  {
+				  path: 'about',
+				  name: 'about',
+				  component: () => import('@/views/About.vue'),
+				  children: [
+				  //   {
+				  // 	path: ':projectId',
+				  // 	component: import( '@/views/project/Project.vue'),
+				  //   },
+				  ],
+			  }
+		  ]
+	  	},
+		{
       		path: '/about',
       		name: 'about',
       		component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    	}
+		},
+		{
+			path: '*',
+			// component: PageNotFound,
+			redirect: '/',
+			meta: {
+			  title: 'Not Found',
+			},
+		  },
   ]
 })

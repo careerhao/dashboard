@@ -1,7 +1,11 @@
 <template>
     <div class="home">
-        <TopNav />
-		<router-view></router-view>
+		<div class="home__nav">
+        	<top-nav />
+		</div>
+		<div class="home__content">
+			<router-view></router-view>
+		</div>
     </div>
 </template>
 
@@ -15,3 +19,25 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '@/assets/modules/_all';
+
+.home {
+	height: 100vh;
+  	display: flex;
+	flex-direction: column;
+
+	&__nav {
+		height: $nav-height;
+	}
+
+	&__content {
+		display: flex;
+
+		flex: 1;
+		height: calc(100vh - 4rem);
+	}
+}
+</style>
+
