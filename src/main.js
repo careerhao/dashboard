@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import {
   Button,
+  Input,
   Row,
   Col,
   Icon,
@@ -14,9 +15,12 @@ import {
   DropdownMenu,
   DropdownItem,
   PageHeader,
+  Autocomplete,
 } from 'element-ui';
 
 Vue.use(Button);
+Vue.use(Input);
+Vue.use(Autocomplete);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Icon);

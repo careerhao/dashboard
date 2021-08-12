@@ -1,9 +1,28 @@
 <template>
     <div class="project-root">
-		<ProjectCard
-			:projects="getProjectLists"
-			@selectProject="selectProject"
-		/>
+		<el-row>
+			<el-col class="project-root__header">
+				<div>
+					<el-autocomplete
+						v-model="search"
+						:fetch-suggestions="querySearch"
+						placeholder="Search Project"
+						@select="selectProject"
+					/>
+				</div>
+				<div>
+					<el-button plain class="project-root__button" icon="el-icon-circle-plus-outline">
+						<span class="project-root__text">Create</span>
+					</el-button>
+				</div>
+			</el-col>
+		</el-row>
+		<div class="project-root__wrapper">
+			<ProjectCard
+				:projects="getProjectLists"
+				@selectProject="selectProject"
+			/>
+		</div>
     </div>
 </template>
 
@@ -17,10 +36,16 @@ export default {
 		ProjectCard,
 	},
 	data() {
-		return {}
+		return {
+			search: '',
+			filteredProjecs: [],
+		}
 	},
 	created() {
 		this.$store.dispatch('projects/init');
+	},
+	mounted() {
+		this.filteredProjecs = this.getProjectLists;
 	},
 	computed: {
 		...mapState({
@@ -42,21 +67,57 @@ export default {
 			this.$router.push({
 				path: `/projects/${project.id}`,
 			});
-		}
+		},
+		querySearch(queryString, cb) {
+        	let filteredProjecs = this.filteredProjecs.map(item => ({
+				...item,
+				value: item.name,
+			}));
+        	let results = queryString ? filteredProjecs.filter(this.createFilter(queryString)) : filteredProjecs;
+        	
+        	cb(results);
+      	},
+      	createFilter(queryString) {
+        	return (filteredProjecs) => {
+          		return (filteredProjecs.value.toLowerCase().includes(queryString));
+        };
+      },
 	}
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/modules/_all';
+
 .project-root {
 	display: flex;
-    min-width: 0;
+	flex-direction: column;
+	flex-grow: 2;
+	
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
-	overflow-y: scroll;
+		padding: 1rem 2.6rem 0px 1.5rem;
+	}
 
-    flex-wrap: wrap;
-  	flex-grow: 2;
+	&__wrapper {
+		display: flex;
+	    min-width: 0;
 
-  	padding: 1.5rem;
+		overflow-y: scroll;
+
+		flex-wrap: wrap;
+		flex-grow: 2;
+
+		padding: 1.5rem;
+	}
+}
+
+@media (max-width:550px) {
+  .project-root__text {
+    display: none;
+  }
 }
 </style>
