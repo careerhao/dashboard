@@ -13,6 +13,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  PageHeader,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -25,6 +26,7 @@ Vue.use(Container);
 Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
+Vue.use(PageHeader);
 
 
 Vue.config.productionTip = false;

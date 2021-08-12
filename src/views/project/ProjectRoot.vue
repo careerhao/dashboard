@@ -1,13 +1,15 @@
 <template>
     <div class="project-root">
 		<ProjectCard
-			:projects="projects"
+			:projects="getProjectLists"
 			@selectProject="selectProject"
 		/>
     </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 import ProjectCard from '@/components/project-card/ProjectCard'
 export default {
 	name: 'ProjectRoot',
@@ -15,35 +17,30 @@ export default {
 		ProjectCard,
 	},
 	data() {
-		return {
-			projects: [
-				{
-					id: '00000000-0000-0000-0000-000000000000',
-					name: 'Project1',
-					description: 'This is project1'
-				},
-				{
-					id: '00000000-0000-0000-0000-000000000001',
-					name: 'Project2',
-					description: 'Created on 12/08/2021'
-				},
-				{
-					id: '00000000-0000-0000-0000-000000000002',
-					name: 'Project3',
-					description: ''
-				},
-				{
-					id: '00000000-0000-0000-0000-000000000003',
-					name: 'Project4',
-					description: 'Project4'
-				},
-			]
-		}
+		return {}
+	},
+	created() {
+		this.$store.dispatch('projects/init');
+	},
+	computed: {
+		...mapState({
+			projects: state => state.projects.projectList,
+		}),
+		...mapGetters('projects', {
+			getProjectLists: 'sortProjectListByTimestamp',
+		}),
 	},
 	methods: {
-		selectProject(id) {
+		selectProject(project) {
+			this.$store.dispatch('current_project/selectProject', project)
+			this.$store.dispatch('projects/modifyProjectInfo', {
+				projectId: project.id,
+				data: {
+					timestamp: Date.parse(new Date())	
+				}
+			});
 			this.$router.push({
-				path: `/projects/${id}`,
+				path: `/projects/${project.id}`,
 			});
 		}
 	}

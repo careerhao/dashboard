@@ -33,7 +33,7 @@
                         </el-dropdown>
                     </div>
                     <div class="project-card__open">
-                        <el-button plain size="medium" @click.native="selectProject(item.id)">打开</el-button>
+                        <el-button plain size="medium" @click.native="selectProject(item)">打开</el-button>
                     </div>
                 </div>
             </el-card>
