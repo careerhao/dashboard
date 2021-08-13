@@ -9,7 +9,13 @@
 						:fetch-suggestions="querySearch"
 						placeholder="Search Project"
 						@select="selectProject"
-					/>
+					>
+						<i
+    						class="el-icon-search el-input__icon"
+    						slot="suffix"
+    					>
+  						</i>
+					</el-autocomplete>
 				</div>
 				<div>
 					<el-button
