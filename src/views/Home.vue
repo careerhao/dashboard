@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/modules/_all';
+@import '@/assets/main';
 
 .home {
 	height: 100vh;

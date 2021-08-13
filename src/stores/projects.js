@@ -25,6 +25,7 @@ const initialState = () => ({
             timestamp: '',
         },
     ],
+    createProjectModalOpen: false,
 })
 
 const getters = {
@@ -37,11 +38,16 @@ const mutations = {
         Object.keys(project).forEach(oldKey => {
             Object.keys(data).forEach(newKey => {
                 if(oldKey === newKey) {
-                    
                     project[oldKey] = data[newKey]
                 }
             })
         })
+    },
+    TOGGLE_CREATE_PROJECT_MODAL(state) {
+        state.createProjectModalOpen = !state.createProjectModalOpen ;
+    },
+    CREATE_NEW_PROJECT(state, data) {
+        state.projectList.push(data);
     }
 }
 
@@ -50,7 +56,13 @@ const actions = {
         // Get project list from endpoints
     },
     modifyProjectInfo({ commit }, {projectId, data}) {
-        commit('MODIFY_PROJECT_INFO', {projectId, data})
+        commit('MODIFY_PROJECT_INFO', {projectId, data});
+    },
+    toggleCreateProject({ commit }) {
+        commit('TOGGLE_CREATE_PROJECT_MODAL');
+    },
+    createProject({ commit }, data) { 
+        commit('CREATE_NEW_PROJECT', data);
     }
 }
 

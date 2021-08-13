@@ -1,13 +1,13 @@
 <template>
     <el-row :gutter="20" class="project-card">
-        <el-col v-for="(item,index) in projects" 
-            :key="`card_${index}`" 
-            :xs="24" 
-            :sm="12" 
+        <el-col v-for="(item,index) in projects"
+            :key="`card_${index}`"
+            :xs="24"
+            :sm="12"
             :lg="6"
             class="project-card__col"
         >
-            <el-card shadow="always" class="project-card__box">
+            <el-card shadow="none" class="project-card__box">
     		    <div class="project-card__header">
     			    <span><strong>{{ item.name }}</strong></span>
   			    </div>
@@ -15,7 +15,7 @@
     			    <span class="project-card__description--none" v-if="item.description === ''">
                         <i>(No description)</i>
     			    </span>
-                    <span v-else>
+                    <span v-else class="project-card__description-text">
                         {{ item.description }}
                     </span>
   			    </div>
@@ -26,14 +26,14 @@
                                 <i class="el-icon-more el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item icon="el-icon-edit">编辑</el-dropdown-item>
-                                <el-dropdown-item icon="el-icon-share" disabled>分享</el-dropdown-item>
-                                <el-dropdown-item icon="el-icon-delete" divided>删除</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-edit" class="el-dropdown-items">Edit</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-share" class="el-dropdown-items" disabled>Share</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-delete" class="el-dropdown-items--danger" divided>Remove</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </div>
                     <div class="project-card__open">
-                        <el-button plain size="medium" @click.native="selectProject(item)">打开</el-button>
+                        <el-button plain size="medium" class="button-plain--overwrite" @click.native="selectProject(item)">GO</el-button>
                     </div>
                 </div>
             </el-card>
@@ -63,8 +63,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/modules/_all';
- 
+@import '@/assets/main';
+
 .project-card {
     display: flex;
     flex-wrap: wrap;
@@ -90,6 +90,11 @@ export default {
         padding: 1rem 0;
         font-size: 12px;
 
+        &-text {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
         &--none {
             color: $gray-light;
         }
@@ -101,6 +106,20 @@ export default {
 
         padding-top: .75rem;
         border-top: 1px solid $almost-gray;
+    }
+}
+.el-dropdown-items {
+    &:hover {
+        background-color: $almost-gray;
+        color: $almost-black;
+    }
+    &--danger {
+        color: $almost-red;
+
+        &:hover {
+            background-color: $almost-red;
+            color: $white;
+        }
     }
 }
 

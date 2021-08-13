@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/modules/_all';
+@import '@/assets/main';
 
 .nav {
     display: flex;
@@ -29,7 +29,8 @@ export default {
     background-color: $white; 
     color: $almost-black; 
     fill: $almost-black;
-    box-shadow: $box-shadow;
+
+    border-bottom: 1px solid $almost-gray;
 
     &__content {
         align-items: center;
