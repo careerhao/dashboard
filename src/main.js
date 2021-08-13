@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import {
+  Aside,
   Button,
   Input,
   Row,
@@ -16,6 +17,18 @@ import {
   DropdownItem,
   PageHeader,
   Autocomplete,
+  Dialog,
+  Form,
+  Select,
+  FormItem,
+  Option,
+  Menu,
+  RadioButton,
+  MenuItemGroup,
+  MenuItem,
+  Submenu,
+  RadioGroup,
+  Main,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -31,7 +44,19 @@ Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
 Vue.use(PageHeader);
-
+Vue.use(Dialog);
+Vue.use(Form);
+Vue.use(Select);
+Vue.use(FormItem);
+Vue.use(Option);
+Vue.use(Menu);
+Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
+Vue.use(RadioButton);
+Vue.use(RadioGroup);
+Vue.use(Submenu);
+Vue.use(Aside);
+Vue.use(Main);
 
 Vue.config.productionTip = false;
 

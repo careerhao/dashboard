@@ -1,0 +1,9 @@
+@import '@/assets/modules/_all';
+
+.button-plain--overwrite {
+    &:hover {
+        background-color: $white;
+        border-color: $almost-black;
+        color: $almost-black;
+    }
+}
