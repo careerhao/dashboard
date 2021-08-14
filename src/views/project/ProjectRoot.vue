@@ -84,7 +84,6 @@ export default {
 			this.$router.push({
 				path: `/projects/${project.id}`,
 			});
-			this.$store.dispatch('current_project/selectProject', project)
 			this.$store.dispatch('projects/modifyProjectInfo', {
 				projectId: project.id,
 				data: {

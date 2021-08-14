@@ -1,30 +1,7 @@
+import projectServices from '@/services/projectList';
+
 const initialState = () => ({
-    projectList: [
-        {
-            id: '00000000-0000-0000-0000-000000000000',
-            name: 'Project1',
-            description: 'This is project1',
-            timestamp: '',
-        },
-        {
-            id: '00000000-0000-0000-0000-000000000001',
-            name: 'Jroject2',
-            description: 'Created on 12/08/2021',
-            timestamp: '',
-        },
-        {
-            id: '00000000-0000-0000-0000-000000000002',
-            name: 'Prject3',
-            description: '',
-            timestamp: '',
-        },
-        {
-            id: '00000000-0000-0000-0000-000000000003',
-            name: 'Project4',
-            description: 'Project4',
-            timestamp: '',
-        },
-    ],
+    projectList: [],
     createProjectModalOpen: false,
 })
 
@@ -33,6 +10,9 @@ const getters = {
 }
 
 const mutations = {
+    SET_PROJECT_LIST(state, projectList) {
+        state.projectList = projectList;
+    },
     MODIFY_PROJECT_INFO(state, {projectId, data}) {
         const project = state.projectList.find(p => p.id === projectId)
         Object.keys(project).forEach(oldKey => {
@@ -53,7 +33,14 @@ const mutations = {
 
 const actions = {
     init({ commit }) {
-        // Get project list from endpoints
+        projectServices
+        .getProjects()
+        .then(res => {
+            commit('SET_PROJECT_LIST', res.list);
+        }, err => {
+            console.error(err);    
+            throw err;
+          })
     },
     modifyProjectInfo({ commit }, {projectId, data}) {
         commit('MODIFY_PROJECT_INFO', {projectId, data});

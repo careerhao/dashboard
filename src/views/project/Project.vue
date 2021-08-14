@@ -71,12 +71,10 @@
             </el-aside>
 
             <el-main>
-                <el-page-header @back="goBack" :content="currentProject.name">
-                </el-page-header>
-                <!-- <div>
-                    Selected Project {{ this.$route.params.id }}
-                </div> -->
-                 <div id="content" class="project__content">
+                <div class="project__header">
+                    {{ projectName }}
+                </div>
+                 <div id="content" class="project__content" v-if="layout.length > 0">
                     <grid-layout ref="gridlayout" :layout.sync="layout"
                          :col-num="12"
                          :row-height="30"
@@ -103,6 +101,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import currentProjectService from '@/services/currentProject'
 
 import { GridLayout, GridItem } from "vue-grid-layout"
 
@@ -118,39 +117,15 @@ export default {
     data() {
         return {
             isCollapse: false,
-            layout: [
-                {"x":0,"y":0,"w":4,"h":6,"i":"0"},
-                {"x":2,"y":0,"w":4,"h":4,"i":"1"},
-                {"x":4,"y":0,"w":3,"h":5,"i":"2"},
-            ],
-            chartOptions: [
-                {
-                    id: '00000000-0000-0000-0000-000000000000',
-                    value: 'Pie Chart1',
-                    type: 'Pie Chart',
-                },
-                {
-                    id: '00000000-0000-0000-0000-000000000001',
-                    value: 'Pie Chart2',
-                    type: 'Pie Chart',
-                },
-                {
-                    id: '00000000-0000-0000-0000-000000000002',
-                    value: 'Line Chart1',
-                    type: 'Line Chart'
-                },
-                {
-                    id: '00000000-0000-0000-0000-000000000003',
-                    value: 'Bar Chart1',
-                    type: 'Bar Chart',
-                },
-            ],
+            layout: [],
+            chartOptions: [],
             search: '',
             draggingElement: {},
+            projectName: '',
         };
     },
     created() {
-        console.log(this.$route.params.id)
+        this.fetchData(this.$route.params.id)
     },
      mounted() {
         document.addEventListener("dragover", function (e) {
@@ -158,17 +133,24 @@ export default {
             mouseXY.y = e.clientY;
         }, false);
     },
-    computed: {
-        ...mapState({
-            currentProject: state => state.current_project.currentProject,
-        }),
-    },
+    computed: {},
     methods: {
+        fetchData(id) {
+            currentProjectService
+                .getCurrentProject(id)
+                .then(res => {
+                    this.layout = res.layout;
+                    this.chartOptions = res.chartOptions;
+                    this.projectName = res.name;
+                }, err => {
+                    console.error(err);    
+                    throw err;
+                })
+        },
         goBack() {
             this.$router.push({ path:'/projects' });
         },
         toggleSidebar() {
-            console.log('toggle')
             this.isCollapse = !this.isCollapse;
         },
         querySearch(queryString, cb) {
