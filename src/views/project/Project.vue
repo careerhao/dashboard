@@ -2,7 +2,7 @@
     <div class="project">
         <el-container class="project-container">
             <el-aside :width="isCollapse ? '65px' : '250px'" class="project-aside">
-                <el-menu default-active="1-4-1" class="project-menu" :collapse="isCollapse">
+                <el-menu v-if="chartOptions.length > 0" default-active="1-4-1" class="project-menu" :collapse="isCollapse">
                     <!-- Switch would lead to vue-grid-layout responsive bug -->
                     <div class="project__sidebar-switch">
                         <!-- <i v-if="isCollapse" @click="toggleSidebar" class="el-icon-s-unfold project__sidebar-icon" />
@@ -22,41 +22,27 @@
                             </i>
                         </el-autocomplete>
                     </div>
-                    <el-submenu index="1">
-                        <template slot="title">
-                            <i class="el-icon-pie-chart"></i>
-                            <span slot="title">Pie Chart</span>
+                    <el-submenu 
+                        v-for="charts in chartOptions"
+                        :key="`charts_${charts.id}`"
+                        :index="charts.id"
+                    >
+                        <template
+                            slot="title"
+                        >
+                            <i :class="charts.icon" />
+                            <span slot="title"> {{ charts.value }}</span>
                         </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="1-1">Pie1</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group>
-                            <el-menu-item index="1-2">Pie2</el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-                    <el-submenu index="2">
-                        <template slot="title">
-                            <i class="el-icon-data-line"></i>
-                            <span slot="title">Line Chart</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="2-1">Line1</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group>
-                            <el-menu-item index="2-2">Line2</el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-                    <el-submenu index="3">
-                        <template slot="title">
-                            <i class="el-icon-data-analysis"></i>
-                            <span slot="title">Bar Chart</span>
-                        </template>
-                        <el-menu-item-group>
-                                <el-menu-item index="3-1">Bar1</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group>
-                            <el-menu-item index="3-2">Bar2</el-menu-item>
-                        </el-menu-item-group>
+                        <el-menu-item-group
+                            v-for="(chart,i) in charts.categories"
+                            :key="`categroies_${i}`"
+                        >
+                            <el-menu-item 
+                                :index="`chart_${i}`"
+                            >
+                                {{ chart.name }}
+                            </el-menu-item>
+                        </el-menu-item-group>    
                     </el-submenu>
                     <div
                         @drag="drag"
@@ -75,22 +61,27 @@
                     {{ projectName }}
                 </div>
                  <div id="content" class="project__content" v-if="layout.length > 0">
-                    <grid-layout ref="gridlayout" :layout.sync="layout"
-                         :col-num="12"
-                         :row-height="30"
-                         :is-draggable="true"
-                         :is-resizable="true"
-                         :vertical-compact="true"
-                         :use-css-transforms="true"
+                    <grid-layout 
+                        ref="gridlayout" 
+                        :layout.sync="layout"
+                        :col-num="12"
+                        :row-height="30"
+                        :is-draggable="true"
+                        :is-resizable="true"
+                        :vertical-compact="true"
+                        :use-css-transforms="true"
                     >
-                    <grid-item :key="item.i" v-for="item in layout"
-                           :x="item.x"
-                           :y="item.y"
-                           :w="item.w"
-                           :h="item.h"
-                           :i="item.i"
-                    >
-                        <span class="text">{{ item.i }}</span>
+                        <grid-item 
+                            v-for="(item) in layout"
+                            :key="item.i" 
+                            :x="item.x"
+                            :y="item.y"
+                            :w="item.w"
+                            :h="item.h"
+                            :i="item.i"
+                            class="project__content-items"
+                        >
+                          <span class="text">{{ item.i }}</span>
                     </grid-item>
                     </grid-layout>
                 </div>
@@ -106,13 +97,13 @@ import currentProjectService from '@/services/currentProject'
 import { GridLayout, GridItem } from "vue-grid-layout"
 
 let mouseXY = {"x": null, "y": null};
-let DragPos = {"x": null, "y": null, "w": 4, "h": 6, "i": null};
+let DragPos = {"x": null, "y": null, "w": 6, "h": 4, "i": null};
 
 export default {
     name: 'Project',
     components: {
         GridLayout,
-        GridItem
+        GridItem,
     },
     data() {
         return {
@@ -127,7 +118,7 @@ export default {
     created() {
         this.fetchData(this.$route.params.id)
     },
-     mounted() {
+    mounted() {
         document.addEventListener("dragover", function (e) {
             mouseXY.x = e.clientX;
             mouseXY.y = e.clientY;
@@ -212,22 +203,20 @@ export default {
                 mouseInGrid = true;
             }
             if (mouseInGrid === true) {
-                //alert(`Dropped element props:\n${JSON.stringify(DragPos, ['x', 'y', 'w', 'h'], 2)}`);
                 this.$refs.gridlayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, 1, 1);
                 this.layout = this.layout.filter(obj => obj.i !== 'drop');
-
-                this.draggingElement = {
+                
+                 this.draggingElement = {
                     x: DragPos.x,
                     y: DragPos.y,
                     w: DragPos.w,
                     h: DragPos.h,
                     i: DragPos.i,
                 };
-            }
-
-            this.putDownNewElement();
-        },
-        putDownNewElement() {
+               }
+               this.putDownNewElement();
+            },
+            putDownNewElement() {
             this.layout.push({
                     x: DragPos.x,
                     y: DragPos.y,
@@ -292,6 +281,10 @@ export default {
         padding: 1rem 0;
     }
 
+    &__content-items {
+        box-sizing: border-box;
+    }
+
     &__search {
         width: 100%;
     }
@@ -341,7 +334,8 @@ export default {
 
     touch-action: none;
 
-    box-sizing: content-box;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 .vue-grid-item .no-drag {
     height: 100%;
@@ -352,5 +346,17 @@ export default {
 }
 .vue-grid-item .add {
     cursor: pointer;
+}
+
+.chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
+  }
+
+@media (max-width:1024px) {
+  .chart-wrapper {
+    padding: 8px;
+  }
 }
 </style>

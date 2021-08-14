@@ -11,25 +11,74 @@ export const projects = {
         chartOptions: [
             {
                 id: '00000000-0000-0000-0000-000000000000',
-                value: 'Pie Chart1',
-                type: 'Pie Chart',
-            },
-            {
-                id: '00000000-0000-0000-0000-000000000001',
-                value: 'Pie Chart2',
-                type: 'Pie Chart',
+                categories: [
+                    {   id: '00000001-0000-0000-0000-000000000000',
+                        type: 'pie',
+                        name: 'Pie Chart1'
+                    },
+                    {
+                        id: '00000002-0000-0000-0000-000000000000',
+                        type: 'rose-pie',
+                        name: 'Pie Chart2'
+                    }
+                ],
+                value: 'Pie Chart',
+                icon: 'el-icon-pie-chart'
             },
             {
                 id: '00000000-0000-0000-0000-000000000002',
-                value: 'Line Chart1',
-                type: 'Line Chart'
+                categories: [
+                    {
+                        id: '00000003-0000-0000-0000-000000000000',
+                        type: 'line',
+                        name: 'Line Chart'
+                    }
+                ],
+                value: 'Line Chart',
+                icon: 'el-icon-data-line'
             },
             {
                 id: '00000000-0000-0000-0000-000000000003',
-                value: 'Bar Chart1',
-                type: 'Bar Chart',
+                categories: [
+                    {
+                        id: '00000004-0000-0000-0000-000000000000',
+                        type: 'bar',
+                        name: 'Bar Chart'
+                    }
+                ],
+                value: 'Bar Chart',
+                icon: 'el-icon-data-analysis'
             },
         ],
+        charts: [
+            {
+                title: {
+                    text: '某站点用户访问来源',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        center: ['50%', '50%'],
+                        data: [
+                            {value: 1048, name: '搜索引擎'},
+                            {value: 735, name: '直接访问'},
+                            {value: 580, name: '邮件营销'},
+                            {value: 484, name: '联盟广告'},
+                            {value: 300, name: '视频广告'}
+                        ],
+                    }
+                ]
+            }
+        ]
     },
     {
         id: '00000000-0000-0000-0000-000000000001',
@@ -42,23 +91,43 @@ export const projects = {
         chartOptions: [
             {
                 id: '00000000-0000-0000-0000-000000000000',
-                value: 'Pie Chart1',
-                type: 'Pie Chart',
-            },
-            {
-                id: '00000000-0000-0000-0000-000000000001',
-                value: 'Pie Chart2',
-                type: 'Pie Chart',
+                categories: [
+                    {   id: '00000001-0000-0000-0000-000000000000',
+                        type: 'pie',
+                        name: 'Pie Chart1'
+                    },
+                    {
+                        id: '00000002-0000-0000-0000-000000000000',
+                        type: 'rose-pie',
+                        name: 'Pie Chart2'
+                    }
+                ],
+                value: 'Pie Chart',
+                icon: 'el-icon-pie-chart'
             },
             {
                 id: '00000000-0000-0000-0000-000000000002',
-                value: 'Line Chart1',
-                type: 'Line Chart'
+                categories: [
+                    {
+                        id: '00000003-0000-0000-0000-000000000000',
+                        type: 'line',
+                        name: 'Line Chart'
+                    }
+                ],
+                value: 'Line Chart',
+                icon: 'el-icon-data-line'
             },
             {
                 id: '00000000-0000-0000-0000-000000000003',
-                value: 'Bar Chart1',
-                type: 'Bar Chart',
+                categories: [
+                    {
+                        id: '00000004-0000-0000-0000-000000000000',
+                        type: 'bar',
+                        name: 'Bar Chart'
+                    }
+                ],
+                value: 'Bar Chart',
+                icon: 'el-icon-data-analysis'
             },
         ],
     },
@@ -104,23 +173,43 @@ export const projects = {
         chartOptions: [
             {
                 id: '00000000-0000-0000-0000-000000000000',
-                value: 'Pie Chart1',
-                type: 'Pie Chart',
-            },
-            {
-                id: '00000000-0000-0000-0000-000000000001',
-                value: 'Pie Chart2',
-                type: 'Pie Chart',
+                categories: [
+                    {   id: '00000001-0000-0000-0000-000000000000',
+                        type: 'pie',
+                        name: 'Pie Chart1'
+                    },
+                    {
+                        id: '00000002-0000-0000-0000-000000000000',
+                        type: 'rose-pie',
+                        name: 'Pie Chart2'
+                    }
+                ],
+                value: 'Pie Chart',
+                icon: 'el-icon-pie-chart'
             },
             {
                 id: '00000000-0000-0000-0000-000000000002',
-                value: 'Line Chart1',
-                type: 'Line Chart'
+                categories: [
+                    {
+                        id: '00000003-0000-0000-0000-000000000000',
+                        type: 'line',
+                        name: 'Line Chart'
+                    }
+                ],
+                value: 'Line Chart',
+                icon: 'el-icon-data-line'
             },
             {
                 id: '00000000-0000-0000-0000-000000000003',
-                value: 'Bar Chart1',
-                type: 'Bar Chart',
+                categories: [
+                    {
+                        id: '00000004-0000-0000-0000-000000000000',
+                        type: 'bar',
+                        name: 'Bar Chart'
+                    }
+                ],
+                value: 'Bar Chart',
+                icon: 'el-icon-data-analysis'
             },
         ],
     },
