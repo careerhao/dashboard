@@ -29,6 +29,8 @@ import {
   Submenu,
   RadioGroup,
   Main,
+  Skeleton,
+  SkeletonItem,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -57,6 +59,8 @@ Vue.use(RadioGroup);
 Vue.use(Submenu);
 Vue.use(Aside);
 Vue.use(Main);
+Vue.use(Skeleton);
+Vue.use(SkeletonItem)
 
 Vue.config.productionTip = false;
 

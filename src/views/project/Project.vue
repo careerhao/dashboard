@@ -3,25 +3,6 @@
         <el-container class="project-container">
             <el-aside :width="isCollapse ? '65px' : '250px'" class="project-aside">
                 <el-menu v-if="chartOptions.length > 0" default-active="1-4-1" class="project-menu" :collapse="isCollapse">
-                    <!-- Switch would lead to vue-grid-layout responsive bug -->
-                    <div class="project__sidebar-switch">
-                        <!-- <i v-if="isCollapse" @click="toggleSidebar" class="el-icon-s-unfold project__sidebar-icon" />
-                        <i v-else  @click="toggleSidebar" class="el-icon-s-fold project__sidebar-icon" /> -->
-                        <!-- <span v-show="!isCollapse">Charts</span> -->
-                        <el-autocomplete
-                            class="project__search"
-                            v-model="search"
-                            :fetch-suggestions="querySearch"
-                            placeholder="Charts"
-                            @select="selectChart"
-                        >
-                            <i
-                                class="el-icon-search el-input__icon"
-                                slot="suffix"
-                            >
-                            </i>
-                        </el-autocomplete>
-                    </div>
                     <el-submenu 
                         v-for="charts in chartOptions"
                         :key="`charts_${charts.id}`"
@@ -40,19 +21,18 @@
                             <el-menu-item 
                                 :index="`chart_${i}`"
                             >
-                                {{ chart.name }}
+                                <div
+                                    @drag="drag"
+                                    @dragend="dragend"
+                                    class="droppable-element"
+                                    draggable="true"
+                                    unselectable="on"
+                                >
+                                    <chart-card :name="chart.name" :imageurl="chart.thumburl"/>
+                                </div>
                             </el-menu-item>
                         </el-menu-item-group>    
                     </el-submenu>
-                    <div
-                        @drag="drag"
-                        @dragend="dragend"
-                        class="droppable-element"
-                        draggable="true"
-                        unselectable="on"
-                    >
-                        Droppable Element (Drag me!)
-                    </div>
                 </el-menu>
             </el-aside>
 
@@ -93,24 +73,25 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import currentProjectService from '@/services/currentProject'
+import ChartCard from '@/components/charts/chart-card/ChartCard'
 
 import { GridLayout, GridItem } from "vue-grid-layout"
 
 let mouseXY = {"x": null, "y": null};
-let DragPos = {"x": null, "y": null, "w": 6, "h": 4, "i": null};
+let DragPos = {"x": null, "y": null, "w": 4, "h": 4, "i": null};
 
 export default {
     name: 'Project',
     components: {
         GridLayout,
         GridItem,
+        ChartCard,
     },
     data() {
         return {
             isCollapse: false,
             layout: [],
             chartOptions: [],
-            search: '',
             draggingElement: {},
             projectName: '',
         };
@@ -144,20 +125,10 @@ export default {
         toggleSidebar() {
             this.isCollapse = !this.isCollapse;
         },
-        querySearch(queryString, cb) {
-            var chartOptions = this.chartOptions;
-            var results = queryString ? chartOptions.filter(this.createFilter(queryString)) : chartOptions;
-            cb(results);
-        },
-        createFilter(queryString) {
-            return (chartOptions) => {
-            return (chartOptions.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-            };
-        },
         selectChart(item) {
             console.log(item)
         },
-        drag: function (e) {
+        drag(e) {
             let parentRect = document.getElementById('content').getBoundingClientRect();
             let mouseInGrid = false;
 
@@ -196,7 +167,7 @@ export default {
                 }
             }
         },
-        dragend: function (e) {
+        dragend(e) {
             let parentRect = document.getElementById('content').getBoundingClientRect();
             let mouseInGrid = false;
             if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
@@ -216,19 +187,20 @@ export default {
                }
                this.putDownNewElement();
             },
-            putDownNewElement() {
+        putDownNewElement() {
             this.layout.push({
                     x: DragPos.x,
                     y: DragPos.y,
                     w: DragPos.w,
                     h: DragPos.h,
                     i: DragPos.i,
-                });
-                this.$refs.gridLayout.dragEvent('dragend', DragPos.i, DragPos.x,DragPos.y,1,1);
-                try {
-                    this.$refs.gridLayout.$children[this.layout.length].$refs.item.style.display="block";
-                } catch {
-                }
+            });
+            this.$refs.gridLayout.dragEvent('dragend', DragPos.i, DragPos.x,DragPos.y,1,1);
+            try {
+                this.$refs.gridLayout.$children[this.layout.length].$refs.item.style.display="block";
+            } catch {
+                console.log("Something wrong")
+            }
         }
     }
 }
@@ -242,29 +214,6 @@ export default {
     flex-grow: 2;
 
     overflow-x: hidden;
-
-    &__sidebar-switch {
-        padding: 10px;
-
-        // display: flex;
-        // align-items: center;
-        // justify-content: space-between;
-
-        // font-size: 1.125rem;
-        // color: #909399;
-        // padding: 0 1.25rem;
-        // -webkit-transition: border-color .3s,background-color .3s,color .3s;
-        // transition: border-color .3s,background-color .3s,color .3s;
-        // -webkit-box-sizing: border-box;
-        // box-sizing: border-box;
-
-        // height: 3.5rem;
-        // line-height: 3.5rem;
-        // list-style: none;
-        // position: relative;
-        // white-space: nowrap;
-        // margin: 0 4px;
-    }
 
     &__sidebar-icon {
         vertical-align: middle;
@@ -290,14 +239,18 @@ export default {
     }
 }
 
-.project-aside,
-.project-menu,
-.project-container {
+.project-aside, .project-container {
     height: 100%;
+}
+.project-menu {
+    overflow: auto;
+    height: 100%;
+    padding-bottom: 1rem;
 }
 
 .project-aside {
     border-top: 1px solid $almost-gray;
+    overflow: hidden;
 }
 
 .header-container {
@@ -359,4 +312,8 @@ export default {
     padding: 8px;
   }
 }
+
+/deep/ .el-menu-item, .el-menu--inline {
+    min-width: 170px !important;
+  }
 </style>

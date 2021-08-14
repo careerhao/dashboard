@@ -14,16 +14,18 @@ export const projects = {
                 categories: [
                     {   id: '00000001-0000-0000-0000-000000000000',
                         type: 'pie',
-                        name: 'Pie Chart1'
+                        name: 'Pie Chart1',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
                     },
                     {
                         id: '00000002-0000-0000-0000-000000000000',
                         type: 'rose-pie',
-                        name: 'Pie Chart2'
+                        name: 'Pie Chart2',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Pie Chart',
-                icon: 'el-icon-pie-chart'
+                icon: 'el-icon-pie-chart',
             },
             {
                 id: '00000000-0000-0000-0000-000000000002',
@@ -31,11 +33,12 @@ export const projects = {
                     {
                         id: '00000003-0000-0000-0000-000000000000',
                         type: 'line',
-                        name: 'Line Chart'
+                        name: 'Line Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Line Chart',
-                icon: 'el-icon-data-line'
+                icon: 'el-icon-data-line',
             },
             {
                 id: '00000000-0000-0000-0000-000000000003',
@@ -43,7 +46,8 @@ export const projects = {
                     {
                         id: '00000004-0000-0000-0000-000000000000',
                         type: 'bar',
-                        name: 'Bar Chart'
+                        name: 'Bar Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Bar Chart',
@@ -94,16 +98,18 @@ export const projects = {
                 categories: [
                     {   id: '00000001-0000-0000-0000-000000000000',
                         type: 'pie',
-                        name: 'Pie Chart1'
+                        name: 'Pie Chart1',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
                     },
                     {
                         id: '00000002-0000-0000-0000-000000000000',
                         type: 'rose-pie',
-                        name: 'Pie Chart2'
+                        name: 'Pie Chart2',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Pie Chart',
-                icon: 'el-icon-pie-chart'
+                icon: 'el-icon-pie-chart',
             },
             {
                 id: '00000000-0000-0000-0000-000000000002',
@@ -111,11 +117,12 @@ export const projects = {
                     {
                         id: '00000003-0000-0000-0000-000000000000',
                         type: 'line',
-                        name: 'Line Chart'
+                        name: 'Line Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Line Chart',
-                icon: 'el-icon-data-line'
+                icon: 'el-icon-data-line',
             },
             {
                 id: '00000000-0000-0000-0000-000000000003',
@@ -123,7 +130,8 @@ export const projects = {
                     {
                         id: '00000004-0000-0000-0000-000000000000',
                         type: 'bar',
-                        name: 'Bar Chart'
+                        name: 'Bar Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Bar Chart',
@@ -142,23 +150,47 @@ export const projects = {
         chartOptions: [
             {
                 id: '00000000-0000-0000-0000-000000000000',
-                value: 'Pie Chart1',
-                type: 'Pie Chart',
-            },
-            {
-                id: '00000000-0000-0000-0000-000000000001',
-                value: 'Pie Chart2',
-                type: 'Pie Chart',
+                categories: [
+                    {   id: '00000001-0000-0000-0000-000000000000',
+                        type: 'pie',
+                        name: 'Pie Chart1',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
+                    },
+                    {
+                        id: '00000002-0000-0000-0000-000000000000',
+                        type: 'rose-pie',
+                        name: 'Pie Chart2',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
+                    }
+                ],
+                value: 'Pie Chart',
+                icon: 'el-icon-pie-chart',
             },
             {
                 id: '00000000-0000-0000-0000-000000000002',
-                value: 'Line Chart1',
-                type: 'Line Chart'
+                categories: [
+                    {
+                        id: '00000003-0000-0000-0000-000000000000',
+                        type: 'line',
+                        name: 'Line Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964'
+                    }
+                ],
+                value: 'Line Chart',
+                icon: 'el-icon-data-line',
             },
             {
                 id: '00000000-0000-0000-0000-000000000003',
-                value: 'Bar Chart1',
-                type: 'Bar Chart',
+                categories: [
+                    {
+                        id: '00000004-0000-0000-0000-000000000000',
+                        type: 'bar',
+                        name: 'Bar Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964'
+                    }
+                ],
+                value: 'Bar Chart',
+                icon: 'el-icon-data-analysis'
             },
         ],
     },
@@ -176,16 +208,18 @@ export const projects = {
                 categories: [
                     {   id: '00000001-0000-0000-0000-000000000000',
                         type: 'pie',
-                        name: 'Pie Chart1'
+                        name: 'Pie Chart1',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
                     },
                     {
                         id: '00000002-0000-0000-0000-000000000000',
                         type: 'rose-pie',
-                        name: 'Pie Chart2'
+                        name: 'Pie Chart2',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Pie Chart',
-                icon: 'el-icon-pie-chart'
+                icon: 'el-icon-pie-chart',
             },
             {
                 id: '00000000-0000-0000-0000-000000000002',
@@ -193,11 +227,12 @@ export const projects = {
                     {
                         id: '00000003-0000-0000-0000-000000000000',
                         type: 'line',
-                        name: 'Line Chart'
+                        name: 'Line Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Line Chart',
-                icon: 'el-icon-data-line'
+                icon: 'el-icon-data-line',
             },
             {
                 id: '00000000-0000-0000-0000-000000000003',
@@ -205,7 +240,8 @@ export const projects = {
                     {
                         id: '00000004-0000-0000-0000-000000000000',
                         type: 'bar',
-                        name: 'Bar Chart'
+                        name: 'Bar Chart',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Bar Chart',
