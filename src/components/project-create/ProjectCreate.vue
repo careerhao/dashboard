@@ -21,8 +21,8 @@
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button class="button-plain--overwrite" @click.native="toggleDialog">Cancel</el-button>
-                    <el-button type="primary" @click.native="submit">Comfirm</el-button>
+                    <el-button type="primary"  @click.native="toggleDialog">Cancel</el-button>
+                    <el-button class="button-plain--overwrite" @click.native="submit">Comfirm</el-button>
                 </div>
             </el-dialog>
         </el-col>

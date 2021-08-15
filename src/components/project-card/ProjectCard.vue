@@ -108,20 +108,4 @@ export default {
         border-top: 1px solid $almost-gray;
     }
 }
-.el-dropdown-items {
-    &:hover {
-        background-color: $almost-gray;
-        color: $almost-black;
-    }
-    &--danger {
-        color: $almost-red;
-
-        &:hover {
-            background-color: $almost-red;
-            color: $white;
-        }
-    }
-}
-
-
 </style>
