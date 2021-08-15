@@ -2,8 +2,8 @@
     <div class="project">
         <el-container class="project-container">
             <el-aside :width="isCollapse ? '65px' : '250px'" class="project-aside">
-                <el-menu v-if="chartOptions.length > 0" default-active="1-4-1" class="project-menu" :collapse="isCollapse">
-                    <el-submenu 
+                <el-menu default-active="1-4-1" class="project-menu" :collapse="isCollapse">
+                    <el-submenu
                         v-for="charts in chartOptions"
                         :key="`charts_${charts.id}`"
                         :index="charts.id"
@@ -18,10 +18,11 @@
                             v-for="(chart,i) in charts.categories"
                             :key="`categroies_${i}`"
                         >
-                            <el-menu-item 
+                            <el-menu-item
                                 :index="`chart_${i}`"
                             >
                                 <div
+                                    @dragstart="dragstart(chart)"
                                     @drag="drag"
                                     @dragend="dragend"
                                     class="droppable-element"
@@ -31,7 +32,7 @@
                                     <chart-card :name="chart.name" :imageurl="chart.thumburl"/>
                                 </div>
                             </el-menu-item>
-                        </el-menu-item-group>    
+                        </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
             </el-aside>
@@ -40,9 +41,9 @@
                 <div class="project__header">
                     {{ projectName }}
                 </div>
-                 <div id="content" class="project__content" v-if="layout.length > 0">
-                    <grid-layout 
-                        ref="gridlayout" 
+                 <div id="content" class="project__content" >
+                    <grid-layout
+                        ref="gridlayout"
                         :layout.sync="layout"
                         :col-num="12"
                         :row-height="30"
@@ -51,9 +52,11 @@
                         :vertical-compact="true"
                         :use-css-transforms="true"
                     >
-                        <grid-item 
-                            v-for="(item) in layout"
-                            :key="item.i" 
+                        <grid-item
+                            v-for="(item, index) in layout"
+                            :key="`${item.i}_${index}`"
+                            :minW="4"
+                            :minH="8"
                             :x="item.x"
                             :y="item.y"
                             :w="item.w"
@@ -61,12 +64,32 @@
                             :i="item.i"
                             class="project__content-items"
                         >
-                          <span class="text">{{ item.i }}</span>
+                          <Chart
+                            v-if="!isDragging"
+                            :name="item.chart.name"
+                            :type="item.chart.type"
+                            :url="item.chart.url"
+                            :fetchBySql="item.chart.fetchBySql"
+                            @remove="confirmRemove(item)"
+                          />
                     </grid-item>
                     </grid-layout>
                 </div>
             </el-main>
         </el-container>
+
+        <el-dialog
+            title="Warning"
+            :visible.sync="isConfirmRemoveShow"
+            width="30%"
+        >       
+                <span>Are you confirm to remove </span>
+                <strong><label class="confirm-modal__warning">{{ `${removingItemName} ?` }}</label></strong>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary"  @click.native="cancelRemove">Cancel</el-button>
+                    <el-button class="button-plain--overwrite" @click.native="removeChart">Confirm</el-button>
+                </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -74,11 +97,11 @@
 import { mapState, mapGetters } from 'vuex';
 import currentProjectService from '@/services/currentProject'
 import ChartCard from '@/components/charts/chart-card/ChartCard'
-
+import Chart from '@/components/charts/Chart'
 import { GridLayout, GridItem } from "vue-grid-layout"
 
 let mouseXY = {"x": null, "y": null};
-let DragPos = {"x": null, "y": null, "w": 4, "h": 4, "i": null};
+let DragPos = {"x": null, "y": null, "w": 5, "h": 8, "i": null};
 
 export default {
     name: 'Project',
@@ -86,6 +109,7 @@ export default {
         GridLayout,
         GridItem,
         ChartCard,
+        Chart,
     },
     data() {
         return {
@@ -93,7 +117,11 @@ export default {
             layout: [],
             chartOptions: [],
             draggingElement: {},
+            draggingChart: {},
             projectName: '',
+            isDragging: false,
+            isConfirmRemoveShow: false,
+            removingItem: null,
         };
     },
     created() {
@@ -105,7 +133,15 @@ export default {
             mouseXY.y = e.clientY;
         }, false);
     },
-    computed: {},
+    computed: {
+        removingItemName() {
+            return this.removingItem 
+                    && this.removingItem.chart 
+                    && this.removingItem.chart.name !== ''
+                        ? this.removingItem.chart.name
+                        : 'this chart';
+        },
+    },
     methods: {
         fetchData(id) {
             currentProjectService
@@ -115,7 +151,7 @@ export default {
                     this.chartOptions = res.chartOptions;
                     this.projectName = res.name;
                 }, err => {
-                    console.error(err);    
+                    console.error(err);
                     throw err;
                 })
         },
@@ -127,6 +163,15 @@ export default {
         },
         selectChart(item) {
             console.log(item)
+        },
+        dragstart(chart) {
+            this.draggingChart = {
+                id: chart.id,
+                name: chart.name,
+                type: chart.type,
+                url: '',
+            };
+            this.isDragging = true;
         },
         drag(e) {
             let parentRect = document.getElementById('content').getBoundingClientRect();
@@ -176,15 +221,17 @@ export default {
             if (mouseInGrid === true) {
                 this.$refs.gridlayout.dragEvent('dragend', 'drop', DragPos.x, DragPos.y, 1, 1);
                 this.layout = this.layout.filter(obj => obj.i !== 'drop');
-                
+
                  this.draggingElement = {
                     x: DragPos.x,
                     y: DragPos.y,
                     w: DragPos.w,
                     h: DragPos.h,
                     i: DragPos.i,
+                    chart: this.draggingChart,
                 };
                }
+               this.isDragging = false;
                this.putDownNewElement();
             },
         putDownNewElement() {
@@ -194,13 +241,28 @@ export default {
                     w: DragPos.w,
                     h: DragPos.h,
                     i: DragPos.i,
+                    chart: this.draggingChart,
             });
-            this.$refs.gridLayout.dragEvent('dragend', DragPos.i, DragPos.x,DragPos.y,1,1);
+            //this.$refs.gridLayout.dragEvent('dragend', DragPos.i, DragPos.x,DragPos.y,1,1);
             try {
                 this.$refs.gridLayout.$children[this.layout.length].$refs.item.style.display="block";
             } catch {
-                console.log("Something wrong")
             }
+            this.draggingChart = {};
+        },
+        confirmRemove(item) {
+            this.removingItem = item;
+
+            this.isConfirmRemoveShow = true;
+        },
+        removeChart() {
+            const index = this.layout.findIndex(i => i === this.removingItem);
+            this.layout.splice(index, 1);
+
+            this.isConfirmRemoveShow = false;
+        },
+        cancelRemove() {
+            this.isConfirmRemoveShow = false;
         }
     }
 }
@@ -315,5 +377,11 @@ export default {
 
 /deep/ .el-menu-item, .el-menu--inline {
     min-width: 170px !important;
-  }
+}
+
+.confirm-modal {
+    &__warning {
+        color: $almost-red;
+    }
+}
 </style>
