@@ -7,6 +7,7 @@
             :name="name"
             :url="url"
             :fetchBySql="fetchBySql"
+            @editFromEmpty="edit"
         />
         <div class="chart__features">
             <el-dropdown trigger="click">
@@ -89,7 +90,7 @@ export default {
             this.$refs.chart.refresh();
         },
         edit() {
-
+            this.$emit('edit');
         },
         remove() {
             this.$emit('remove');

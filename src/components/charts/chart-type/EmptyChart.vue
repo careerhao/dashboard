@@ -5,7 +5,7 @@
                 <span>Please fill in the data</span>
             </div>
             <div class="empty-chart__button">
-                <el-button plain>Edit</el-button>
+                <el-button plain @click.native="editFromEmpty">Edit</el-button>
             </div>
         </div>
     </div>
@@ -14,6 +14,11 @@
 <script>
 export default {
     name: 'EmptyChart',
+    methods: {
+        editFromEmpty() {
+            this.$emit('editFromEmpty');
+        }
+    }
 }
 </script>
 

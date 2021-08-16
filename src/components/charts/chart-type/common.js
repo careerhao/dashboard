@@ -23,6 +23,7 @@ export default {
     	return {
     		resizeHandler: null,
 			containerSizeObserver: null,
+			loadingChart: false,
     }
 },
 
@@ -67,6 +68,7 @@ methods: {
     	this.containerSizeObserver.disconnect();
 	},
 	fetchData(url) {
+		this.loadingChart = true;
 		return chartDataService
 			.getByUrl(url)
 			.then(res => {
@@ -79,6 +81,7 @@ methods: {
 			.catch(err => {
 				console.warn('Something woring when trying to fetch chart data:', err)
 			})
+			.finally(() => this.loadingChart = false)
 	},
 	refresh() {
 		this.fetchData(this.url)
