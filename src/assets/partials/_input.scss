@@ -13,6 +13,10 @@
     }
 }
 
+.el-input__inner--no-border {
+    border: 0;
+}
+
 .el-textarea__inner {
     border-top: none;
     border-left: none;
