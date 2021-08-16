@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import NProgress from 'nprogress'; // progress bar
+import 'nprogress/nprogress.css'; // progress bar style
 
 Vue.use(Router)
+NProgress.configure({ showSpinner: false })
 
 // Fix push to same path got errors
 const originalPush = Router.prototype.push
@@ -10,7 +13,7 @@ Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
-export default new Router({
+const router = new Router({
 	mode: 'hash',
 	routes: [
     	{
@@ -44,3 +47,15 @@ export default new Router({
 		  },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+	console.log('%cWelcome to Dash','font-size:18px;color:#adb3b9;');
+	NProgress.start();
+	next();
+});
+
+router.afterEach(() => {
+	NProgress.done();
+})
+  
+export default router;

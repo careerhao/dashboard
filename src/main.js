@@ -31,6 +31,8 @@ import {
   Main,
   Skeleton,
   SkeletonItem,
+  Radio,
+  Notification,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -60,7 +62,10 @@ Vue.use(Submenu);
 Vue.use(Aside);
 Vue.use(Main);
 Vue.use(Skeleton);
-Vue.use(SkeletonItem)
+Vue.use(SkeletonItem);
+Vue.use(Radio);
+
+Vue.prototype.$notify = Notification;
 
 Vue.config.productionTip = false;
 
