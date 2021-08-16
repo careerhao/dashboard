@@ -39,4 +39,5 @@ export default {
   get: fetchAPI('GET'),
   post: fetchAPI('POST'),
   put: fetchAPI('PUT'),
+  delete: fetchAPI('DELETE'),
 }

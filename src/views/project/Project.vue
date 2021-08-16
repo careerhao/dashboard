@@ -29,7 +29,10 @@
                                     draggable="true"
                                     unselectable="on"
                                 >
-                                    <chart-card :name="chart.name" :imageurl="chart.thumburl"/>
+                                    <chart-card 
+                                        :name="chart.name" 
+                                        :imageurl="chart.thumburl"
+                                    />
                                 </div>
                             </el-menu-item>
                         </el-menu-item-group>
@@ -71,6 +74,7 @@
                             :url="item.chart.url"
                             :fetchBySql="item.chart.fetchBySql"
                             @remove="confirmRemove(item)"
+                            @edit="editChart(item)"
                           />
                     </grid-item>
                     </grid-layout>
@@ -90,15 +94,24 @@
                     <el-button class="button-plain--overwrite" @click.native="removeChart">Confirm</el-button>
                 </span>
         </el-dialog>
+
+        <!-- Must be use v-if, el-dialog bug cannot be destoried -->
+        <chart-edit 
+            v-if="isEditShow"
+            :chart-data="editingChart"
+            @submitForm="submitChartChanges"
+            @toggleEditChartDialog="toggleEditChartDialog"
+        />
     </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { GridLayout, GridItem } from "vue-grid-layout"
 import currentProjectService from '@/services/currentProject'
 import ChartCard from '@/components/charts/chart-card/ChartCard'
 import Chart from '@/components/charts/Chart'
-import { GridLayout, GridItem } from "vue-grid-layout"
+import ChartEdit from '@/components/charts/ChartEdit'
 
 let mouseXY = {"x": null, "y": null};
 let DragPos = {"x": null, "y": null, "w": 5, "h": 8, "i": null};
@@ -110,22 +123,46 @@ export default {
         GridItem,
         ChartCard,
         Chart,
+        ChartEdit,
     },
     data() {
         return {
             isCollapse: false,
             layout: [],
-            chartOptions: [],
+            chartOptions: [
+            {
+                id: '00000000-0000-0000-0000-000000000000',
+                categories: [
+                    {   id: '00000001-0000-0000-0000-000000000000',
+                        type: 'pie-chart',
+                        name: 'Pie Chart1',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
+                    },
+                    {
+                        id: '00000002-0000-0000-0000-000000000000',
+                        type: 'rose-pie-chart',
+                        name: 'Pie Chart2',
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
+                    }
+                ],
+                value: 'Pie Chart',
+                icon: 'el-icon-pie-chart',
+            }],
             draggingElement: {},
             draggingChart: {},
             projectName: '',
             isDragging: false,
             isConfirmRemoveShow: false,
             removingItem: null,
+            editingChart: {},
         };
     },
+    watch: {
+        // 如果路由有变化，会再次执行该方法
+        '$route': 'fetchData'
+    },
     created() {
-        this.fetchData(this.$route.params.id)
+        this.fetchData()
     },
     mounted() {
         document.addEventListener("dragover", function (e) {
@@ -134,6 +171,12 @@ export default {
         }, false);
     },
     computed: {
+        ...mapState({
+            isEditShow: state => state.currentProject.isEditChartShow,
+        }),
+        ...mapGetters('currentProject',{
+            getCurrentProjectId: 'currentProjectId',
+        }),
         removingItemName() {
             return this.removingItem 
                     && this.removingItem.chart 
@@ -145,11 +188,14 @@ export default {
     methods: {
         fetchData(id) {
             currentProjectService
-                .getCurrentProject(id)
+                .getCurrentProject(this.$route.params.id)
                 .then(res => {
-                    this.layout = res.layout;
-                    this.chartOptions = res.chartOptions;
-                    this.projectName = res.name;
+                    // TODO: Remove if-else when we can hit real endpoint, no just pulling from data/projects.js
+                    // refresh page may lead to error since we fetch data by project id.
+                    (res && res.layout) ? this.layout = res.layout : [];
+                    (res && res.chartOptions) ? this.chartOptions = res.chartOptions : [];
+                    (res && res.chartOptions) ? this.projectName = res.name : '';
+                    this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
                     console.error(err);
                     throw err;
@@ -263,6 +309,38 @@ export default {
         },
         cancelRemove() {
             this.isConfirmRemoveShow = false;
+        },
+        editChart(item) {
+            this.editingChart = item.chart;
+            this.toggleEditChartDialog();
+        },
+        toggleEditChartDialog () {
+            this.$store.dispatch('currentProject/toggleEditChartShow');
+        },
+        submitChartChanges(data) {
+            this.toggleEditChartDialog();
+            this.isEditing = true
+            currentProjectService
+                .updateChart({
+                    projectId: this.getCurrentProjectId,
+                    chartId: data.id,
+                    body: data,
+                })
+                .then(res => {
+                    if(res.status === 204) {
+                        this.isEditing = false;
+
+                        this.$notify({
+                            title: 'Success',
+                            message: `${data.name} has been updated`,
+                            type: 'success',
+                            duration: 2000,
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
 }
@@ -327,6 +405,7 @@ export default {
 
 // Grid layout background class
 .vue-grid-layout {
+    min-height: 30rem;
     border: 1px dashed $gray;
     touch-action: none;
 }

@@ -1,13 +1,21 @@
 <template>
     <el-row :gutter="20" class="project-card">
-        <el-col v-for="(item,index) in projects"
+        <el-col 
+            v-for="(item,index) in projects"
             :key="`card_${index}`"
             :xs="24"
             :sm="12"
             :lg="6"
             class="project-card__col"
         >
-            <el-card shadow="none" class="project-card__box">
+            <el-card 
+                shadow="none" 
+                class="project-card__box"
+                :class="{
+                    'project-card__box--disabled' : 
+                    isProjectCreating(item.id)
+                }"
+            >
     		    <div class="project-card__header">
     			    <span><strong>{{ item.name }}</strong></span>
   			    </div>
@@ -26,14 +34,44 @@
                                 <i class="el-icon-more el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item icon="el-icon-edit" class="el-dropdown-items">Edit</el-dropdown-item>
-                                <el-dropdown-item icon="el-icon-share" class="el-dropdown-items" disabled>Share</el-dropdown-item>
-                                <el-dropdown-item icon="el-icon-delete" class="el-dropdown-items--danger" divided>Remove</el-dropdown-item>
+                                <el-dropdown-item 
+                                    icon="el-icon-edit" 
+                                    class="el-dropdown-items" 
+                                    :disabled="isProjectCreating(item.id)" 
+                                    @click.native="editProject(item)"
+                                >
+                                    Edit
+                                </el-dropdown-item>
+                                <el-dropdown-item 
+                                    icon="el-icon-share" 
+                                    class="el-dropdown-items" 
+                                    :disabled="isProjectCreating(item.id)"
+                                >
+                                    Share
+                                </el-dropdown-item>
+                                <el-dropdown-item 
+                                    icon="el-icon-delete" 
+                                    class="el-dropdown-items--danger" 
+                                    :disabled="isProjectCreating(item.id)" 
+                                    divided
+                                    @click.native="removeProject(item)"
+                                >
+                                    Remove
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </div>
                     <div class="project-card__open">
-                        <el-button plain size="medium" class="button-plain--overwrite" @click.native="selectProject(item)">GO</el-button>
+                        <el-button 
+                            plain 
+                            size="medium" 
+                            class="button-plain--overwrite" 
+                            :disabled="isProjectCreating(item.id)" 
+                            :loading="isProjectCreating(item.id)" 
+                            @click.native="selectProject(item)"
+                        >
+                            GO
+                        </el-button>
                     </div>
                 </div>
             </el-card>
@@ -42,6 +80,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 export default {
     name: 'ProjectCard',
     props: {
@@ -49,14 +89,34 @@ export default {
             required: true,
             type: Array,
         },
+        editing: {
+            required: false,
+            type: String,
+        },
+        creatingProjectId: {
+            required: false,
+            type: String,
+            default: '',
+        }
         // isAdmin: {
         //     required: false,
         //     type: Boolean,
         // },
     },
+    computed: {
+        ...mapGetters('projects',{
+            isProjectCreating: 'isProjectCreating',
+        }),
+    },
     methods: {
         selectProject(id) {
             this.$emit('selectProject', id);
+        },
+        editProject(item) {
+            this.$emit('editProject', item);
+        },
+        removeProject(item) {
+            this.$emit('removeProject', item);
         }
     }
 }
@@ -79,6 +139,10 @@ export default {
         background-color: $white;
         border:1px solid $almost-gray;
         border-radius: $border-radius;
+
+        &--disabled {
+            opacity: .7;
+        }
     }
 
     &__header {

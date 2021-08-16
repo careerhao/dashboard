@@ -1,4 +1,5 @@
 import { get } from '@/utils/fetch';
+import log from '@/utils/log';
 
 export default {
   getByUrl(url) {

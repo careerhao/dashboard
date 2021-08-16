@@ -18,10 +18,4 @@ export const projectList = {
         description: '',
         timestamp: '',
     },
-    {
-        id: '00000000-0000-0000-0000-000000000003',
-        name: 'Project4',
-        description: 'Project4',
-        timestamp: '',
-    },
 ]};
