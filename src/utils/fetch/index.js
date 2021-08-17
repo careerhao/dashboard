@@ -7,8 +7,17 @@ const fetchOptions = {
 
 const getApiUrl = path => {
     const cleanPath = path.replace(/\/+$/, '') // Remove trailing slashes
+    const url = `${process.env.VUE_APP_API_URL}/${cleanPath}/`
     
-    return `${process.env.VUE_APP_API_URL}/${cleanPath}${API_TRAILING_SLASH ? '/' : ''}`
+    if (method === 'GET' && Object.keys(data).length > 0) {
+      const queryString = Object.keys(data)
+        .map(key => `${key}=${data[key]}`)
+        .join('&')
+  
+      return `${url}?${queryString}`
+    }
+    
+    return url;
   }
 
 const fetchAPI = method => (path, config = {}) => {

@@ -5,11 +5,12 @@ module.exports = {
     /** Enviroment setting
      * process.env.NODE_ENV==='production'  
      * process.env.NODE_ENV==='development'
-     * baseUrl: process.env.NODE_ENV==='production'?"https://cdn.didabisai.com/front/":'front/',
+     * baseUrl: process.env.NODE_ENV==='production'?"prod_url":'',
      */
 
     publicPath: "./",
     outputDir: "dist",
+    filenameHasing: true,
     lintOnSave: true,
     productionSourceMap: false,
     chainWebpack: config => {
@@ -29,7 +30,7 @@ module.exports = {
         https: false,
         port: 8989,
         hotOnly: false,
-        public: '0.0.0.0:8989',
+        host: '0.0.0.0',
     }, 
 
     pluginOptions: {}

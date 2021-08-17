@@ -57,7 +57,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 
-const ghUrl = process.env.NODE_ENV !== 'production' ? '' : process.env.URL_FOR_GITHUB;
+const ghUrl = process.env.NODE_ENV !== 'production' ? '' : process.env.VUE_APP_URL_FOR_GITHUB;
 
 export default {
     name: 'ProjectShare',
