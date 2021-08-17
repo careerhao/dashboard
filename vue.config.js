@@ -1,4 +1,5 @@
 const path = require('path');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
     /** Enviroment setting
@@ -11,7 +12,11 @@ module.exports = {
     outputDir: "dist",
     lintOnSave: true,
     productionSourceMap: false,
-    chainWebpack: () => {},
+    chainWebpack: config => {
+      config
+          .plugin('webpack-bundle-analyzer')
+          .use(BundleAnalyzerPlugin)
+    },
     configureWebpack: {
         resolve: {
             alias: {

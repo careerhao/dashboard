@@ -1,0 +1,34 @@
+@import '@/assets/modules/_all';
+
+.button-plain--overwrite {
+    &:hover {
+        background-color: $white;
+        border-color: $almost-black;
+        color: $almost-black;
+    }
+}
+
+.el-button--info,
+.el-button--default,
+.el-button--cyan,
+.el-button--primary,
+.el-button--success,
+.el-button--warning,
+.el-button--danger {
+    border-color: $almost-gray;
+    color: $almost-black;
+
+    &:hover {
+        border-color: $almost-black;
+    }
+}
+
+.el-button--primary{
+    background-color: $light-gray;
+}
+
+.el-button.is-plain:focus, .el-button.is-plain:hover {
+    background: #FFF;
+    border-color: black;
+    color: black;
+}

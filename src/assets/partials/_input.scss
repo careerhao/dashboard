@@ -1,0 +1,30 @@
+@import '@/assets/modules/_all';
+
+//overwrite el-input related component styles
+.el-input__inner{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: transparent;
+    border-radius: unset;
+
+    &:focus {
+        border-color: $almost-black
+    }
+}
+
+.el-input__inner--no-border {
+    border: 0;
+}
+
+.el-textarea__inner {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: transparent;
+    border-radius: unset;
+
+    &:focus {
+        border-color: $almost-black
+    }
+}
