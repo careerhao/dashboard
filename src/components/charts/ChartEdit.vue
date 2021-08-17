@@ -18,6 +18,7 @@
                     <el-form-item>
                         <el-radio v-model="dataSource" :label="1">API</el-radio>
                         <el-radio v-model="dataSource" :label="2">SQL</el-radio>
+                        <el-radio v-model="dataSource" :label="3">Wbsocket</el-radio>
                     </el-form-item>
                     <el-form-item v-show="dataSource === 1" label="URL">
                         <el-input v-model="form.url" autocomplete="off"></el-input>
@@ -31,6 +32,9 @@
                             maxlength="150"
                             show-word-limit
                         ></el-input>                
+                    </el-form-item>
+                    <el-form-item v-show="dataSource === 3">
+                        <label>Coming soon...</label>
                     </el-form-item>
 
                 </el-form>
