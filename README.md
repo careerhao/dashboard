@@ -37,32 +37,32 @@ Current app accepts the following vars:
 | `URL_FOR_GITHUB`      | `None`        | `window.location.origin` cannot catch up real url in github.io, so we have to feed in `/${github_repo_name}` to make it works      |
 
 ## TODO
-:heavy_check_mark: ~~Project list for dashboards in home page~~
-:heavy_check_mark: ~~Project & charts create/edit/remove~~
-:heavy_check_mark: ~~Pre-defined few widgets for user to select (echarts)~~
-:heavy_check_mark: ~~Customize the layout for dashboard by adjusting the size/position of the widget~~
-:heavy_check_mark: ~~Share the dashboard with url~~
-:heavy_check_mark: ~~Share the dashboard with project name~~
-:heavy_check_mark: ~~Both of project id and name must be unique, since share function based on these~~
-:heavy_check_mark: ~~Fake api hitting functions to make the loading state~~
-:heavy_check_mark: ~~Drop down project list on the top bar~~
-:heavy_check_mark: ~~State management, like loading/creating/editing~~
+:heavy_check_mark: ~~Project list for dashboards in home page~~  
+:heavy_check_mark: ~~Project & charts create/edit/remove~~  
+:heavy_check_mark: ~~Pre-defined few widgets for user to select (echarts)~~  
+:heavy_check_mark: ~~Customize the layout for dashboard by adjusting the size/position of the widget~~  
+:heavy_check_mark: ~~Share the dashboard with url~~  
+:heavy_check_mark: ~~Share the dashboard with project name~~  
+:heavy_check_mark: ~~Both of project id and name must be unique, since share function based on these~~  
+:heavy_check_mark: ~~Fake api hitting functions to make the loading state~~  
+:heavy_check_mark: ~~Drop down project list on the top bar~~  
+:heavy_check_mark: ~~State management, like loading/creating/editing~~  
 
-:heavy_minus_sign: Tools on project page like Save/Theme Switch/Preview
-:heavy_minus_sign: Multi-language support
-:heavy_minus_sign: More sharable css variables for theme
-:heavy_minus_sign: Admin tool on the top bar
-:heavy_minus_sign: Auth & user role system
+:heavy_minus_sign: Tools on project page like Save/Theme Switch/Preview  
+:heavy_minus_sign: Multi-language support  
+:heavy_minus_sign: More sharable css variables for theme  
+:heavy_minus_sign: Admin tool on the top bar  
+:heavy_minus_sign: Auth & user role system  
 
 ##### Long Term
-:heavy_minus_sign: More state management to make UX better
-:heavy_minus_sign: Performance optimization
-:heavy_minus_sign: Mock.js to overwrite the setTimeout...
-:heavy_minus_sign: Real-time charts update for charts (Depend on requirements)
-:heavy_minus_sign: Github CI/CD (Host by other cloud platform through docker if possible)
-:heavy_minus_sign: Unit and e2e tests
-:heavy_minus_sign: REFACTOR
+:heavy_minus_sign: More state management to make UX better  
+:heavy_minus_sign: Performance optimization  
+:heavy_minus_sign: Mock.js to overwrite the setTimeout...  
+:heavy_minus_sign: Real-time charts update for charts (Depend on requirements)  
+:heavy_minus_sign: Github CI/CD (Host by other cloud platform through docker if possible)  
+:heavy_minus_sign: Unit and e2e tests  
+:heavy_minus_sign: REFACTOR  
 
-:x: Mobile friendly
+:x: Mobile friendly  
 
 
