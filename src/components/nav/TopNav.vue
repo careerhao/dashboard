@@ -37,15 +37,26 @@
                 <!-- <span>Hao</span> -->
             </div>
         </div>
+
+        <project-create
+			v-if="isCreateProjectModalOpen"
+			@submitForm="createNewProject"
+			@toggleCreateProjectModal="toggleCreateProjectModal"
+		/>
     </nav>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
 import projectServices from '@/services/projectList';
+import ProjectCreate from '@/components/project-create/ProjectCreate';
+import { guid } from '@/utils';
 
 export default {
     name: 'TopNav',
+    components: {
+        ProjectCreate,
+    },
     mounted() {
         this.fetchData();
     },
@@ -57,6 +68,7 @@ export default {
     computed: {
         ...mapState({
             projects: state => state.projects.projectList,
+            isCreateProjectModalOpen: state => state.projects.createProjectModalOpen,
         }),
         ...mapGetters('projects', {
             getProjectLists: 'sortProjectListByTimestamp',
@@ -98,7 +110,52 @@ export default {
         },
 		createProject() {
 			this.toggleCreateProjectModal();
-		},
+        },
+        createNewProject(data) {
+			const payload = {
+				id: guid(), // Id should be created by backend, remove this when we can hit real endpoint
+			  	name: data.name,
+			  	description: data.description,
+				timestamp: Date.parse(new Date())
+			  }
+
+			this.$store.dispatch('projects/createProject', payload);
+			this.toggleCreateProjectModal();
+			this.$store.dispatch('projects/setCreating', payload.id)
+			  projectServices
+			  	.createProject({
+					body: payload,
+					projectId: payload.id, // For name check, remove this and only need project data when we can hit real endpoints
+				})
+				.then(res => {
+					if(res.status === 204) {
+						this.$notify({
+                            title: 'Success',
+                            message: `${payload.name} has been created`,
+                            type: 'success',
+							duration: 2000,
+							offset: 50
+                        });
+                        
+                        this.selectProject(payload.id);
+					}
+				})
+				.catch(err => {
+					this.$notify.error({
+          				title: 'Error',
+						message: `Create ${payload.name} failed, due to ${err}, please try again.`,
+						duration: 0,
+						offset: 50
+					});
+
+					// TODO: remove payload from store if failed, after remove function done
+
+					throw new Error(err);
+				})
+				.finally(() => {
+					this.$store.dispatch('projects/finishCreate', payload.id);
+				})
+		  },
     }
 }
 </script>
@@ -178,10 +235,6 @@ export default {
         padding-right: 2rem;
         width: 100%;
     }
-}
-
-/deep/.el-input__inner {
-    border:0;
 }
 
 /deep/ .el-autocomplete-suggestion {

@@ -48,11 +48,6 @@
                             </div>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="Wbsocket" name="thrid">
-                        <div class="project-share__content">
-                            Coming soon...
-                        </div>
-                    </el-tab-pane>
                 </el-tabs>
             </el-dialog>
         </el-col>
@@ -61,6 +56,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+
+const ghUrl = process.env.NODE_ENV !== 'production' ? '' : process.env.URL_FOR_GITHUB;
 
 export default {
     name: 'ProjectShare',
@@ -81,7 +78,8 @@ export default {
             isSharingProjectModalOpen: state => state.projects.isSharingProjectModalOpen,
         }),
         getUrl() {
-            return `${window.location.origin}/#/share/`
+            // For github gh-page, normal url should remove this /dashboard/
+            return `${window.location.origin}${ghUrl}/#/share/`;
         }
     },
     methods: {

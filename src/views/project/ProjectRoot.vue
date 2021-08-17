@@ -40,11 +40,6 @@
 			/>
 		</div>
 
-		<project-create
-			v-if="isCreateProjectModalOpen"
-			@submitForm="createNewProject"
-			@toggleCreateProjectModal="toggleCreateProjectModal"
-		/>
 		<project-update
 			v-if="isEditingProjectModalOpen"
 			:projectInfo="editingProjectInfo"
@@ -77,20 +72,14 @@
 import { mapState, mapGetters } from 'vuex';
 
 import ProjectCard from '@/components/project-card/ProjectCard';
-import ProjectCreate from '@/components/project-create/ProjectCreate';
 import ProjectUpdate from '@/components/project-update/ProjectUpdate';
 import ProjectShare from '@/components/project-share/ProjectShare';
 import projectServices from '@/services/projectList';
-
-const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-// Generate a pseudo-GUID by concatenating random hexadecimal.
-const guid = () => (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 
 export default {
 	name: 'ProjectRoot',
     components: {
 		ProjectCard,
-		ProjectCreate,
 		ProjectUpdate,
 		ProjectShare,
 	},
@@ -107,7 +96,6 @@ export default {
 	computed: {
 		...mapState({
 			projects: state => state.projects.projectList,
-			isCreateProjectModalOpen: state => state.projects.createProjectModalOpen,
 			isEditingProjectModalOpen: state => state.projects.isEditingProjectModalOpen,
 			isSharingProjectModalOpen: state => state.projects.isSharingProjectModalOpen,
 		}),
@@ -142,67 +130,18 @@ export default {
           		return (filteredProjecs.value.toLowerCase().includes(queryString));
         	};
 		},
-		createProject() {
-			this.toggleCreateProjectModal();
+		toggleEditProjectModal() {
+			this.$store.dispatch('projects/toggleEditProject')
 		},
-	  	toggleCreateProjectModal() {
-            this.$store.dispatch('projects/toggleCreateProject');
-	  	},
-	  	createNewProject(data) {
-			const payload = {
-				id: guid(), // Id should be created by backend, remove this when we can hit real endpoint
-			  	name: data.name,
-			  	description: data.description,
-				timestamp: Date.parse(new Date())
-			  }
+		editProject(project) {
+			this.editingProjectInfo = project;
 
-			this.$store.dispatch('projects/createProject', payload);
-			this.toggleCreateProjectModal();
-			this.$store.dispatch('projects/setCreating', payload.id)
-			  projectServices
-			  	.createProject({
-					body: payload,
-					projectId: payload.id, // For name check, remove this and only need project data when we can hit real endpoints
-				})
-				.then(res => {
-					if(res.status === 204) {
-						this.$notify({
-                            title: 'Success',
-                            message: `${payload.name} has been created`,
-                            type: 'success',
-							duration: 2000,
-							offset: 50
-						});
-					}
-				})
-				.catch(err => {
-					this.$notify.error({
-          				title: 'Error',
-						message: `Create ${payload.name} failed, due to ${err}, please try again.`,
-						duration: 0,
-						offset: 50
-					});
-
-					// TODO: remove payload from store if failed, after remove function done
-
-					throw new Error(err);
-				})
-				.finally(() => {
-					this.$store.dispatch('projects/finishCreate', payload.id);
-				})
-		  },
-		  toggleEditProjectModal() {
-			  this.$store.dispatch('projects/toggleEditProject')
-		  },
-		  editProject(project) {
-			  this.editingProjectInfo = project;
-
-			  this.toggleEditProjectModal();
-		  },
-		  submitUpdate(form) {
-			  this.$store.dispatch('projects/toggleEditProject')
-			  this.isEditingProject = true;
-			  projectServices
+			this.toggleEditProjectModal();
+		},
+		submitUpdate(form) {
+			this.$store.dispatch('projects/toggleEditProject')
+			this.isEditingProject = true;
+			projectServices
 			  	.updateProject({
 					projectId: form.id,
 					body: form,
@@ -245,17 +184,17 @@ export default {
 					this.isEditingProject = false;
 					this.editingProjectInfo = {};
 				})
-		  },
-		  toggleRemoveConfimation() {
-			  this.removeProjectConfirm = !this.removeProjectConfirm;
-		  },
-		  removeProject(project) {
-			  this.editingProjectInfo = project;
-			  this.toggleRemoveConfimation();
-		  },
-		  confirmRemove() {
-				this.toggleRemoveConfimation();
-				this.$store.dispatch('projects/setCreating', this.editingProjectInfo.id)
+		},
+		toggleRemoveConfimation() {
+			this.removeProjectConfirm = !this.removeProjectConfirm;
+		},
+		removeProject(project) {
+			this.editingProjectInfo = project;
+			this.toggleRemoveConfimation();
+		},
+		confirmRemove() {
+			this.toggleRemoveConfimation();
+			this.$store.dispatch('projects/setCreating', this.editingProjectInfo.id)
 				projectServices
 					.removeProject(this.editingProjectInfo.id)
 					.then(res => {
@@ -285,15 +224,15 @@ export default {
 						this.$store.dispatch('projects/setCreating', this.editingProjectInfo.id)
 						this.editingProjectInfo = {};
 					})
-		  },
-		  shareProject(project) {
-			  this.editingProjectInfo = project;
+		},
+		shareProject(project) {
+			this.editingProjectInfo = project;
 
-			  this.toggleShareProjectModal();
-		  },
-		  toggleShareProjectModal() {
-			  this.$store.dispatch('projects/toggleShareProjectModal');
-		  }
+			this.toggleShareProjectModal();
+		},
+		toggleShareProjectModal() {
+			this.$store.dispatch('projects/toggleShareProjectModal');
+		}
 	}
 }
 </script>

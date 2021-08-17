@@ -192,9 +192,9 @@ export default {
                 .then(res => {
                     // TODO: Remove if-else when we can hit real endpoint, no just pulling from data/projects.js
                     // refresh page may lead to error since we fetch data by project id.
-                    (res && res.layout) ? this.layout = res.layout : [];
+                    (res && res.layout) ? this.layout = res.layout : this.layout = [];
                     (res && res.chartOptions) ? this.chartOptions = res.chartOptions : [];
-                    (res && res.chartOptions) ? this.projectName = res.name : '';
+                    (res && res.chartOptions) ? this.projectName = res.name : this.projectName = 'Created Project';
                     this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
                     console.error(err);
