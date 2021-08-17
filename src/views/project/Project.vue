@@ -42,7 +42,19 @@
 
             <el-main>
                 <div class="project__header">
-                    {{ projectName }}
+                    <div class="project__name-container">
+                        <label v-show="!isProjectNameEditiable">{{ projectName }}</label>
+                        <el-input
+                            v-model="editingProjectName"
+                            v-show="isProjectNameEditiable">
+                        </el-input>
+                    </div> 
+
+                    <div class="project__icon-container">
+                        <i v-show="!isProjectNameEditiable && !loadingProjectName" class="el-icon-edit-outline" @click="toggleProjectNameEditiable"/>
+                        <i v-show="loadingProjectName" class="el-icon-loading" />
+                        <i v-show="isProjectNameEditiable && !loadingProjectName" class="el-icon-folder-checked" @click="submitNameChange"/>
+                    </div>
                 </div>
                  <div id="content" class="project__content" >
                     <grid-layout
@@ -109,6 +121,7 @@
 import { mapState, mapGetters } from 'vuex';
 import { GridLayout, GridItem } from "vue-grid-layout"
 import currentProjectService from '@/services/currentProject'
+import projectServices from '@/services/projectList'
 import ChartCard from '@/components/charts/chart-card/ChartCard'
 import Chart from '@/components/charts/Chart'
 import ChartEdit from '@/components/charts/ChartEdit'
@@ -151,10 +164,13 @@ export default {
             draggingElement: {},
             draggingChart: {},
             projectName: '',
+            editingProjectName: '',
+            loadingProjectName: false,
             isDragging: false,
             isConfirmRemoveShow: false,
             removingItem: null,
             editingChart: {},
+            isProjectNameEditiable: false,
         };
     },
     watch: {
@@ -195,6 +211,7 @@ export default {
                     (res && res.layout) ? this.layout = res.layout : this.layout = [];
                     (res && res.chartOptions) ? this.chartOptions = res.chartOptions : [];
                     (res && res.chartOptions) ? this.projectName = res.name : this.projectName = 'Created Project';
+                    this.editingProjectName = this.projectName;
                     this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
                     console.error(err);
@@ -341,6 +358,52 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        toggleProjectNameEditiable() {
+            this.isProjectNameEditiable = !this.isProjectNameEditiable;
+        },
+        submitNameChange() {
+            this.toggleProjectNameEditiable();
+            this.loadingProjectName = true;
+            projectServices
+			  	.updateProject({
+					projectId: this.$route.params.id,
+					body: {
+                        name: this.editingProjectName,
+                    },
+				})
+				.then(res => {
+					if(res.status === 204) {
+						this.$notify({
+                            title: 'Success',
+                            message: `${this.projectName} has been updated`,
+                            type: 'success',
+							duration: 2000,
+							offset: 50
+						});
+						this.$store.dispatch('projects/modifyProjectInfo', {
+							projectId: this.$route.params.id,
+							data: {
+								name: this.projectName,
+								timestamp: Date.parse(new Date()),
+							}
+                        });
+                        this.projectName = this.editingProjectName;
+					} else {
+						// for cannot catch err
+					}
+				})
+				.catch(err => {
+					this.$notify.error({
+          				title: 'Error',
+						message: `Update ${this.projectName} failed, due to ${err}, please try again.`,
+						duration: 0,
+						offset: 50
+					});
+
+					throw new Error(err);
+                })
+                .finally(() => this.loadingProjectName = false);
         }
     }
 }
@@ -363,6 +426,27 @@ export default {
         font-size: 1.125rem;
 
         cursor: pointer;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 15rem;
+        height: 2.5rem;
+
+        color: $gray;
+    }
+
+    &__name-container {
+        font-size: 1.2rem;
+        max-width: 10rem;
+
+        text-overflow: ellipsis;
+    }
+
+    &__icon-container {
+        font-size: 1.2rem;
     }
 
     &__content {
@@ -391,12 +475,6 @@ export default {
 .project-aside {
     border-top: 1px solid $almost-gray;
     overflow: hidden;
-}
-
-.header-container {
-    text-align: right;
-    font-size: 12px;
-    background-color: #545c64;
 }
 
 .project-aside:not(.el-menu--collapse) {
@@ -456,6 +534,14 @@ export default {
 
 /deep/ .el-menu-item, .el-menu--inline {
     min-width: 170px !important;
+}
+
+/deep/ .el-input__inner {
+    box-shadow: unset;
+
+    &:disabled {
+        background: transparent;
+    }
 }
 
 .confirm-modal {
