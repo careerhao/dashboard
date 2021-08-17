@@ -112,7 +112,7 @@ export default {
                             focus: 'series'
                         },
                         data: [820, 932, 901, 934, 1290, 1330, 1320],
-                        animationDuration: 2800,
+                        animationDuration: 2000,
                         animationEasing: 'quadraticOut'
                     }
                 ]
@@ -134,7 +134,7 @@ export default {
 			}
             this.chart.clear();
 			this.chart.setOption(this.preDefinedOptions);
-			this.chart.resize();
+			// this.chart.resize();
     	},
   	}
 }

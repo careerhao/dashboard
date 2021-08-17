@@ -36,6 +36,7 @@
 				@editProject="editProject"
 				@selectProject="selectProject"
 				@removeProject="removeProject"
+				@shareProject="shareProject"
 			/>
 		</div>
 
@@ -47,8 +48,14 @@
 		<project-update
 			v-if="isEditingProjectModalOpen"
 			:projectInfo="editingProjectInfo"
-			@toggleEditProject="toggleEditProjectModal"
+			@toggleEditProjectModal="toggleEditProjectModal"
 			@submitForm="submitUpdate"
+		/>
+
+		<project-share
+			v-if="isSharingProjectModalOpen"
+			:projectInfo="editingProjectInfo"
+			@toggleShareProjectModal="toggleShareProjectModal"
 		/>
 
 		<el-dialog
@@ -72,6 +79,7 @@ import { mapState, mapGetters } from 'vuex';
 import ProjectCard from '@/components/project-card/ProjectCard';
 import ProjectCreate from '@/components/project-create/ProjectCreate';
 import ProjectUpdate from '@/components/project-update/ProjectUpdate';
+import ProjectShare from '@/components/project-share/ProjectShare';
 import projectServices from '@/services/projectList';
 
 const S4 = () => (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -84,6 +92,7 @@ export default {
 		ProjectCard,
 		ProjectCreate,
 		ProjectUpdate,
+		ProjectShare,
 	},
 	data() {
 		return {
@@ -100,6 +109,7 @@ export default {
 			projects: state => state.projects.projectList,
 			isCreateProjectModalOpen: state => state.projects.createProjectModalOpen,
 			isEditingProjectModalOpen: state => state.projects.isEditingProjectModalOpen,
+			isSharingProjectModalOpen: state => state.projects.isSharingProjectModalOpen,
 		}),
 		...mapGetters('projects', {
 			isProjectLoading: 'isProjectLoading',
@@ -275,6 +285,14 @@ export default {
 						this.$store.dispatch('projects/setCreating', this.editingProjectInfo.id)
 						this.editingProjectInfo = {};
 					})
+		  },
+		  shareProject(project) {
+			  this.editingProjectInfo = project;
+
+			  this.toggleShareProjectModal();
+		  },
+		  toggleShareProjectModal() {
+			  this.$store.dispatch('projects/toggleShareProjectModal');
 		  }
 	}
 }

@@ -49,6 +49,11 @@ export default {
     mounted() {
         this.fetchData();
     },
+    data() {
+        return {
+            search: '',
+        }
+    },
     computed: {
         ...mapState({
             projects: state => state.projects.projectList,

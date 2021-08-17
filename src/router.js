@@ -33,9 +33,20 @@ const router = new Router({
 					path:'projects/:id',
 					name: 'project',
 					props: true,
-					component: () => import( '@/views/project/Project.vue'),
+					component: () => import('@/views/project/Project.vue'),
 				},
 			]
+		},
+		{
+			path: '/share',
+			name: 'shareRoot',
+			component: () => import('@/views/share/ShareRoot.vue'),
+		},
+		{
+			path:'/share/:id',
+			props: true,
+			name:'share',
+			component: () => import('@/views/share/Share.vue'),
 		},
 		{
 			path: '*',

@@ -33,6 +33,9 @@ import {
   SkeletonItem,
   Radio,
   Notification,
+  Tabs,
+  TabPane,
+  Link,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -64,6 +67,9 @@ Vue.use(Main);
 Vue.use(Skeleton);
 Vue.use(SkeletonItem);
 Vue.use(Radio);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Link);
 
 Vue.prototype.$notify = Notification;
 

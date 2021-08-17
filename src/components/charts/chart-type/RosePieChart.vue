@@ -46,7 +46,7 @@ export default {
                 },
                 data: [],
                 animationEasing: 'cubicInOut',
-                animationDuration: 2600,
+                animationDuration: 2000,
                 emphasis: {
                     itemStyle: {
                         shadowBlur: 10,
@@ -74,7 +74,7 @@ export default {
 			}
             this.chart.clear();
 			this.chart.setOption(this.preDefinedOptions);
-			this.chart.resize();
+			// this.chart.resize();
     	},
   	}
 }

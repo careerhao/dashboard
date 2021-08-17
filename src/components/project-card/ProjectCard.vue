@@ -45,7 +45,7 @@
                                 <el-dropdown-item 
                                     icon="el-icon-share" 
                                     class="el-dropdown-items" 
-                                    :disabled="isProjectCreating(item.id)"
+                                    @click.native="shareProject(item)"
                                 >
                                     Share
                                 </el-dropdown-item>
@@ -117,6 +117,9 @@ export default {
         },
         removeProject(item) {
             this.$emit('removeProject', item);
+        },
+        shareProject(item) {
+            this.$emit('shareProject', item);
         }
     }
 }

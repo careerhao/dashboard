@@ -6,6 +6,7 @@ const initialState = () => ({
     projectList: [],
     createProjectModalOpen: false,
     isEditingProjectModalOpen: false,
+    isSharingProjectModalOpen: false,
     editingProject: {},
 })
 
@@ -56,7 +57,10 @@ const mutations = {
         const copyList = deepClone(state.projectList);
 
         state.projectList = copyList.filter(item => item.id !== id);
-    }
+    },
+    TOGGLE_SHARE_PROJECT_MODAL(state) {
+        state.isSharingProjectModalOpen = !state.isSharingProjectModalOpen;
+    },
 }
 
 const actions = {
@@ -89,6 +93,9 @@ const actions = {
     },
     removeProject({ commit }, projectId) {
         commit('REMOVE_PROJECT_BY_ID', projectId);
+    },
+    toggleShareProjectModal({ commit }) {
+        commit('TOGGLE_SHARE_PROJECT_MODAL');
     }
 }
 

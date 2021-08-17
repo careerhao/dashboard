@@ -9,7 +9,7 @@
             :fetchBySql="fetchBySql"
             @editFromEmpty="edit"
         />
-        <div class="chart__features">
+        <div class="chart__features" v-if="isAdmin">
             <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
                     <i class="el-icon-setting" />
@@ -75,7 +75,12 @@ export default {
         type: {
             type: String,
             required: true,
-        }
+        },
+        isAdmin: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
     },
     computed: {
         isEmptyChart() {

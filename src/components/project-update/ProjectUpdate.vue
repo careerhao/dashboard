@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         toggleDialog() {
-            this.$emit('toggleEditProject');
+            this.$emit('toggleEditProjectModal');
         },
         submit() {
             this.$emit('submitForm', this.form);
