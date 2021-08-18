@@ -2,8 +2,8 @@ export const projectList = {
     'list':[
     {
         id: '00000000-0000-0000-0000-000000000000',
-        name: 'Project1',
-        description: 'This is project1',
+        name: 'Charts',
+        description: 'Includes full charts layout for testing',
         timestamp: '',
     },
     {

@@ -10,7 +10,6 @@ module.exports = {
 
     publicPath: "./",
     outputDir: "dist",
-    filenameHasing: true,
     lintOnSave: true,
     productionSourceMap: false,
     chainWebpack: config => {
