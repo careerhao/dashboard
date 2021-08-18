@@ -45,10 +45,11 @@
 </template>
 
 <script>
-import PieChart from './chart-type/PieChart'
-import RosePieChart from './chart-type/RosePieChart'
+import PieChart from './chart-type/PieChart';
+import RosePieChart from './chart-type/RosePieChart';
 import LineChart from './chart-type/LineChart';
-import EmptyChart from './chart-type/EmptyChart'
+import EmptyChart from './chart-type/EmptyChart';
+import BarChart from './chart-type/BarChart';
 
 export default {
     name: 'Chart',
@@ -56,6 +57,7 @@ export default {
         PieChart,
         RosePieChart,
         LineChart,
+        BarChart,
         EmptyChart,
     },
     props: {

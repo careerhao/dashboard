@@ -37,6 +37,15 @@ import projectServices from '@/services/projectList';
 export default {
     name: "ShareRoot",
     data() {
+        let validateName = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('Name is required'));
+            } else if(!/^[\u4E00-\u9FA5A-Za-z0-9_.]+$/.test(value)) {
+                callback(new Error('Invalid name'))
+            } else {
+                callback();
+            }
+        };
         return {
             loading: false,
             form: {
@@ -44,7 +53,7 @@ export default {
             },
             rules: {
                 name: [
-                    { required: true, message: 'Name is required', trigger: 'blur' },
+                    { required: true, validator: validateName, trigger: 'blur' },
                 ],
             }
         }
