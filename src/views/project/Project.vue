@@ -44,10 +44,17 @@
                 <div class="project__header">
                     <div class="project__name-container">
                         <label v-show="!isProjectNameEditiable">{{ projectName }}</label>
-                        <el-input
-                            v-model="editingProjectName"
-                            v-show="isProjectNameEditiable">
-                        </el-input>
+                        <el-form 
+                            ref="form" 
+                            :model="form" 
+                            status-icon
+                            :rules="rules"
+                            v-show="isProjectNameEditiable"
+                        >
+                            <el-form-item prop="editingProjectName">
+                                <el-input v-model="form.editingProjectName" />
+                            </el-form-item>
+                        </el-form>
                     </div> 
 
                     <div class="project__icon-container">
@@ -139,6 +146,15 @@ export default {
         ChartEdit,
     },
     data() {
+        let validateName = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('Name is required'));
+            } else if(!/^[\u4E00-\u9FA5A-Za-z0-9_.]+$/.test(value)) {
+                callback(new Error('Invalid name'))
+            } else {
+                callback();
+            }
+        };
         return {
             isCollapse: false,
             layout: [],
@@ -164,7 +180,14 @@ export default {
             draggingElement: {},
             draggingChart: {},
             projectName: '',
-            editingProjectName: '',
+            form: {
+                editingProjectName: '',
+            },
+            rules: {
+                editingProjectName: [
+                    { required: true, validator: validateName, trigger: 'blur' },
+                ],
+            },
             loadingProjectName: false,
             isDragging: false,
             isConfirmRemoveShow: false,
@@ -211,7 +234,7 @@ export default {
                     (res && res.layout) ? this.layout = res.layout : this.layout = [];
                     (res && res.chartOptions) ? this.chartOptions = res.chartOptions : [];
                     (res && res.chartOptions) ? this.projectName = res.name : this.projectName = 'Created Project';
-                    this.editingProjectName = this.projectName;
+                    this.form.editingProjectName = this.projectName;
                     this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
                     console.error(err);
@@ -363,47 +386,54 @@ export default {
             this.isProjectNameEditiable = !this.isProjectNameEditiable;
         },
         submitNameChange() {
-            this.toggleProjectNameEditiable();
-            this.loadingProjectName = true;
-            projectServices
-			  	.updateProject({
-					projectId: this.$route.params.id,
-					body: {
-                        name: this.editingProjectName,
-                    },
-				})
-				.then(res => {
-					if(res.status === 204) {
-						this.$notify({
-                            title: 'Success',
-                            message: `${this.projectName} has been updated`,
-                            type: 'success',
-							duration: 2000,
-							offset: 50
-						});
-						this.$store.dispatch('projects/modifyProjectInfo', {
-							projectId: this.$route.params.id,
-							data: {
-								name: this.projectName,
-								timestamp: Date.parse(new Date()),
-							}
-                        });
-                        this.projectName = this.editingProjectName;
-					} else {
-						// for cannot catch err
-					}
-				})
-				.catch(err => {
-					this.$notify.error({
-          				title: 'Error',
-						message: `Update ${this.projectName} failed, due to ${err}, please try again.`,
-						duration: 0,
-						offset: 50
-					});
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    this.toggleProjectNameEditiable();
+                    this.loadingProjectName = true;
+                    projectServices
+                        .updateProject({
+                            projectId: this.$route.params.id,
+                            body: {
+                                name: this.form.editingProjectName,
+                            },
+                        })
+                        .then(res => {
+                            if(res.status === 204) {
+                                this.$notify({
+                                    title: 'Success',
+                                    message: `${this.projectName} has been updated`,
+                                    type: 'success',
+                                    duration: 2000,
+                                    offset: 50
+                                });
+                                this.$store.dispatch('projects/modifyProjectInfo', {
+                                    projectId: this.$route.params.id,
+                                    data: {
+                                        name: this.projectName,
+                                        timestamp: Date.parse(new Date()),
+                                    }
+                                });
+                                this.projectName = this.form.editingProjectName;
+                            } else {
+                                // for cannot catch err
+                            }
+                        })
+                        .catch(err => {
+                            this.$notify.error({
+                                title: 'Error',
+                                message: `Update ${this.projectName} failed, due to ${err}, please try again.`,
+                                duration: 0,
+                                offset: 50
+                            });
 
-					throw new Error(err);
-                })
-                .finally(() => this.loadingProjectName = false);
+                            throw new Error(err);
+                        })
+                        .finally(() => this.loadingProjectName = false);
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
         }
     }
 }
