@@ -1,6 +1,6 @@
 <template>
     <el-row :gutter="20" class="project-card">
-        <el-col 
+        <el-col
             v-for="(item,index) in projects"
             :key="`card_${index}`"
             :xs="24"
@@ -8,11 +8,11 @@
             :lg="6"
             class="project-card__col"
         >
-            <el-card 
-                shadow="none" 
+            <el-card
+                shadow="none"
                 class="project-card__box"
                 :class="{
-                    'project-card__box--disabled' : 
+                    'project-card__box--disabled' :
                     isProjectCreating(item.id)
                 }"
             >
@@ -20,12 +20,21 @@
     			    <span><strong>{{ item.name }}</strong></span>
   			    </div>
   			    <div class="project-card__description">
-    			    <span class="project-card__description--none" v-if="item.description === ''">
-                        <i>(No description)</i>
-    			    </span>
-                    <span v-else class="project-card__description-text">
-                        {{ item.description }}
-                    </span>
+    			    <div class="project-card__wrapper">
+                        <span class="project-card__description-text project-card__description--none" v-if="item.description === ''">
+                            <i>(No description)</i>
+                        </span>
+                        <span v-else class="project-card__description-text">
+                            {{ item.description }}
+                        </span>
+    			    </div>
+                    <i
+                        class="project-card__description-text
+                            project-card__description-modified
+                            project-card__description--none "
+                    >
+                        Last modified: {{ parseTime(item.timestamp) }}
+                    </i>
   			    </div>
                 <div class="project-card__footer">
                     <div class="project-card__more-options">
@@ -34,25 +43,25 @@
                                 <i class="el-icon-more el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item 
-                                    icon="el-icon-edit" 
-                                    class="el-dropdown-items" 
-                                    :disabled="isProjectCreating(item.id)" 
+                                <el-dropdown-item
+                                    icon="el-icon-edit"
+                                    class="el-dropdown-items"
+                                    :disabled="isProjectCreating(item.id)"
                                     @click.native="editProject(item)"
                                 >
                                     Edit
                                 </el-dropdown-item>
-                                <el-dropdown-item 
-                                    icon="el-icon-share" 
-                                    class="el-dropdown-items" 
+                                <el-dropdown-item
+                                    icon="el-icon-share"
+                                    class="el-dropdown-items"
                                     @click.native="shareProject(item)"
                                 >
                                     Share
                                 </el-dropdown-item>
-                                <el-dropdown-item 
-                                    icon="el-icon-delete" 
-                                    class="el-dropdown-items--danger" 
-                                    :disabled="isProjectCreating(item.id)" 
+                                <el-dropdown-item
+                                    icon="el-icon-delete"
+                                    class="el-dropdown-items--danger"
+                                    :disabled="isProjectCreating(item.id)"
                                     divided
                                     @click.native="removeProject(item)"
                                 >
@@ -62,12 +71,12 @@
                         </el-dropdown>
                     </div>
                     <div class="project-card__open">
-                        <el-button 
-                            plain 
-                            size="medium" 
-                            class="button-plain--overwrite" 
-                            :disabled="isProjectCreating(item.id)" 
-                            :loading="isProjectCreating(item.id)" 
+                        <el-button
+                            plain
+                            size="medium"
+                            class="button-plain--overwrite"
+                            :disabled="isProjectCreating(item.id)"
+                            :loading="isProjectCreating(item.id)"
                             @click.native="selectProject(item)"
                         >
                             GO
@@ -81,7 +90,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-
+import { dateTime, isToday, isThisYear } from '@/utils';
 export default {
     name: 'ProjectCard',
     props: {
@@ -120,6 +129,11 @@ export default {
         },
         shareProject(item) {
             this.$emit('shareProject', item);
+        },
+        parseTime(timestamp) {
+            const time = new Date(parseInt(timestamp))
+
+            return isToday(time) ? dateTime(time).split(',')[1] : dateTime(time).split(',')[0];
         }
     }
 }
@@ -154,12 +168,21 @@ export default {
     }
 
     &__description {
+        display: flex;
+        flex-direction: column;
+
         padding: 1rem 0;
-        font-size: 12px;
 
         &-text {
+            font-size: .75rem;
             word-wrap: break-word;
             word-break: break-all;
+        }
+
+        &-modified {
+            align-self: flex-end;
+
+            margin-top: 1rem;
         }
 
         &--none {

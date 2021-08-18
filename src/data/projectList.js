@@ -4,18 +4,18 @@ export const projectList = {
         id: '00000000-0000-0000-0000-000000000000',
         name: 'Charts',
         description: 'Includes full charts layout for testing',
-        timestamp: '',
+        timestamp: '1628779061000',
     },
     {
         id: '00000000-0000-0000-0000-000000000001',
         name: 'Jroject2',
         description: 'Created on 12/08/2021',
-        timestamp: '',
+        timestamp: '1628778061000',
     },
     {
         id: '00000000-0000-0000-0000-000000000002',
         name: 'Prject3',
         description: '',
-        timestamp: '',
+        timestamp: '1528779241000',
     },
 ]};
