@@ -8,7 +8,7 @@
  - [vue-Router](https://router.vuejs.org/installation.html#direct-download-cdn)
  - [vue-grid-layout](https://jbaysolutions.github.io/vue-grid-layout/guide/properties.html#gridlayout) For drag & drop & resizable component.
  - [ElementUI](https://element.eleme.cn/#/en-US/component/quickstart) Basic UI 
- - [Echarts](https://echarts.apache.org/examples/en/index.html) Data visualization tool.
+ - [Echarts](https://echarts.apache.org/examples/en/index.html) Data visualization tool. See ***[CDN](#cdn)*** below.
 
 ## Getting started
 1. Install the latest [Node.js & NPM](https://nodejs.org).
@@ -37,9 +37,11 @@ Current app accepts the following vars:
 | Name                  | Default       | Description                                                                                                 |
 | :-------------------- | :------------ | :---------------------------------------------------------------------------------------------------------- |
 | `VUE_APP_API_URL`     | `None`        | Set up this to hit real endpoints               |
-| `URL_FOR_GITHUB`      | `None`        | `window.location.origin` cannot catch up real url in github.io, so we have to feed in `/${github_repo_name}` to make it works      |
+| `VUE_APP_URL_FOR_GITHUB`      | `None`        | `window.location.origin` cannot catch up real url in github.io, so we have to feed in `/${github_repo_name}` to make it works      |
 
 ## CDN
+
+Some packages taking a lot of resources(even by dynamic import), so we are using cdn to solve this problem.
 
 | Name           | url                                                                               |
 | :--------------| :-------------------------------------------------------------------------------- |
