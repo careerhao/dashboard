@@ -38,9 +38,10 @@ export default {
     name: "ShareRoot",
     data() {
         let validateName = (rule, value, callback) => {
-            if (value === '') {
+            const valueTrimmed = value.replace(/(^\s*)|(\s*$)/g, "")
+            if (valueTrimmed === '') {
                 callback(new Error('Name is required'));
-            } else if(!/^[\u4E00-\u9FA5A-Za-z0-9_.]+$/.test(value)) {
+            } else if(!/^[\u4E00-\u9FA5A-Za-z0-9 _.]+$/.test(valueTrimmed)) {
                 callback(new Error('Invalid name'))
             } else {
                 callback();
