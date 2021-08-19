@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 // Cannot edit this type of chart yet
 import common from './common';
@@ -23,7 +22,6 @@ export default {
     },
     data() {
         return {
-            chart: null,
             preDefinedOptions: {
                 title: {
                     text: ''
@@ -119,23 +117,5 @@ export default {
             },
         }
     },
-    beforeDestroy() {
-        if (!this.chart) {
-            return
-		};
-
-        this.chart.dispose();
-        this.chart = null;
-    },
-    methods: {
-        initChart() {
-			if(!this.chart) {
-				this.chart = echarts.init(this.$el, 'macarons');
-			}
-            this.chart.clear();
-			this.chart.setOption(this.preDefinedOptions);
-			// this.chart.resize();
-    	},
-  	}
 }
 </script>

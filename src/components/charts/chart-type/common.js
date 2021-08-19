@@ -1,7 +1,30 @@
 import { debounce } from '@/utils/index.js'
 import chartDataService from '@/services/chartData'
 
-const filterOutChart = ['line-chart'];
+// Dynamic import echart components still taking 3.0+ mb.
+// Solution: Using cdn, check /public/index.html <script> for echarts
+// import * as echarts from 'echarts/core';
+// import {
+//     BarChart,
+//     PieChart,
+// } from 'echarts/charts';
+// import {
+//     TitleComponent,
+//     TooltipComponent,
+//     ToolboxComponent,
+//     LegendComponent,
+//     GridComponent,
+//     MarkLineComponent,
+// } from 'echarts/components';
+// // Svg for multi charts import, canvas for single complex chart
+// import {
+//     SVGRenderer
+// } from 'echarts/renderers';
+
+
+// echarts.use(
+//     [TitleComponent, TooltipComponent,ToolboxComponent, LegendComponent, MarkLineComponent, GridComponent, PieChart,, BarChart, SVGRenderer]
+// );
 
 export default {
 	props: {
@@ -21,6 +44,7 @@ export default {
 	},
     data() {
     	return {
+			chart: null,
     		resizeHandler: null,
 			containerSizeObserver: null,
 			loadingChart: false,
@@ -41,10 +65,25 @@ mounted() {
 },
 
 beforeDestroy() {
-    this.destroyResize()
+	this.destroyResize();
+	
+	if (!this.chart) {
+		return
+	};
+
+	this.chart.dispose();
+	this.chart = null;
 },
 
 methods: {
+	initChart() {
+		if(!this.chart) {
+			this.chart = echarts.init(this.$el, 'macarons', {renderer: 'svg'});
+		}
+		this.chart.clear();
+		this.chart.setOption(this.preDefinedOptions);
+		// this.chart.resize();
+	},
     initResize() {
 		// see: https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
     	// echarts resize api need to be called by parent element rather than window
@@ -72,10 +111,7 @@ methods: {
 		return chartDataService
 			.getByUrl(url)
 			.then(res => {
-				// Filter out some chart that not set up yet
-				if(!filterOutChart.includes[this.type]) {
-					this.preDefinedOptions.series[0].data = res;
-				}
+				this.preDefinedOptions.series[0].data = res;
 			})
 			.then(() => this.initChart())
 			.catch(err => {
