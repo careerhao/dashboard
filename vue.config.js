@@ -23,6 +23,9 @@ module.exports = {
               '@': path.resolve(__dirname, './src'),
             },
           },
+      externals: {
+        'echarts': 'echarts',
+      }
     }, 
     devServer: {
         open: true,
@@ -32,5 +35,5 @@ module.exports = {
         host: '0.0.0.0',
     }, 
 
-    pluginOptions: {}
+    pluginOptions: {},
 };
