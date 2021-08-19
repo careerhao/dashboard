@@ -7,6 +7,7 @@
             :name="name"
             :url="url"
             :fetchBySql="fetchBySql"
+            :darkMode="darkMode"
             @editFromEmpty="edit"
         />
         <div class="chart__features" v-if="isAdmin">
@@ -61,6 +62,11 @@ export default {
         EmptyChart,
     },
     props: {
+        darkMode: {
+            type: Boolean,
+            default: false,
+            required: false,
+        },
         name: {
             type: String,
             required: false,

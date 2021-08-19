@@ -36,6 +36,7 @@ import {
   Tabs,
   TabPane,
   Link,
+  Switch,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -70,6 +71,7 @@ Vue.use(Radio);
 Vue.use(Tabs);
 Vue.use(TabPane);
 Vue.use(Link);
+Vue.use(Switch);
 
 Vue.prototype.$notify = Notification;
 
