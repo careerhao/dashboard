@@ -51,21 +51,39 @@
                             :rules="rules"
                             v-show="isProjectNameEditiable"
                         >
-                            <el-form-item prop="editingProjectName">
+                            <el-form-item class="project__name-edit" prop="editingProjectName">
                                 <el-input v-model="form.editingProjectName" />
                             </el-form-item>
                         </el-form>
+
+                        <div class="project__icon-container">
+                            <i v-show="!isProjectNameEditiable && !loadingProjectName" class="el-icon-edit-outline" @click="toggleProjectNameEditiable"/>
+                            <i v-show="loadingProjectName" class="el-icon-loading" />
+                            <i v-show="isProjectNameEditiable && !loadingProjectName" class="el-icon-folder-checked" @click="submitNameChange"/>
+                        </div>
                     </div> 
 
-                    <div class="project__icon-container">
-                        <i v-show="!isProjectNameEditiable && !loadingProjectName" class="el-icon-edit-outline" @click="toggleProjectNameEditiable"/>
-                        <i v-show="loadingProjectName" class="el-icon-loading" />
-                        <i v-show="isProjectNameEditiable && !loadingProjectName" class="el-icon-folder-checked" @click="submitNameChange"/>
+                    <div class="project__feature-container">
+                        <div class="project__feature-items">  
+                            <label>Dark</label> 
+                            <el-switch
+                                :value="darkCharts"
+                                name="Dark Mode"
+                                active-color="#13ce66"
+                                @change="darkChartsToggle"
+                                >
+                            </el-switch>
+                        </div>
+                        <div class="project__feature-items">
+                            <el-button plain size="small">Save</el-button>   
+                        </div>
                     </div>
                 </div>
-                 <div id="content" class="project__content" >
+                 <div id="content" class="project__content">
                     <grid-layout
                         ref="gridlayout"
+                        class="project__grid-container"
+                        :class="{'project__grid-container--dark' : darkCharts}"
                         :layout.sync="layout"
                         :col-num="12"
                         :row-height="30"
@@ -84,10 +102,12 @@
                             :w="item.w"
                             :h="item.h"
                             :i="item.i"
-                            class="project__content-items"
+                            class="project__grid-items"
+                            :class="{'project__grid-items--dark' : darkCharts}"
                         >
                           <Chart
                             v-if="!isDragging"
+                            :darkMode="darkCharts"
                             :name="item.chart.name"
                             :type="item.chart.type"
                             :url="item.chart.url"
@@ -188,6 +208,7 @@ export default {
                     { required: true, validator: validateName, trigger: 'blur' },
                 ],
             },
+            darkCharts: false,
             loadingProjectName: false,
             isDragging: false,
             isConfirmRemoveShow: false,
@@ -234,6 +255,7 @@ export default {
                     (res && res.layout) ? this.layout = res.layout : this.layout = [];
                     (res && res.chartOptions) ? this.chartOptions = res.chartOptions : [];
                     (res && res.chartOptions) ? this.projectName = res.name : this.projectName = 'Created Project';
+                    (res && res.isDarkCharts) ? this.darkCharts = res.isDarkCharts : false;
                     this.form.editingProjectName = this.projectName;
                     this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
@@ -434,6 +456,9 @@ export default {
                     return false;
                 }
             });
+        },
+        darkChartsToggle() {
+            this.darkCharts = !this.darkCharts;
         }
     }
 }
@@ -462,17 +487,52 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        max-width: 15rem;
-        height: 2.5rem;
-
-        color: $gray;
     }
 
     &__name-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 2.5rem;
+
+        color: $gray;
+
         font-size: 1.2rem;
-        max-width: 10rem;
+        width: 15rem;
 
         text-overflow: ellipsis;
+    }
+
+    &__feature-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__feature-items {
+        display: flex;
+        align-items: center;
+
+        padding: 0 1.5rem;
+
+        label {
+            font-size: .875rem;
+            margin: 0 .5rem;
+
+            color: $gray;
+        }
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+
+    &__name-edit {
+        margin-bottom: 0 !important;
     }
 
     &__icon-container {
@@ -484,12 +544,25 @@ export default {
         padding: 1rem 0;
     }
 
-    &__content-items {
-        box-sizing: border-box;
-    }
-
     &__search {
         width: 100%;
+    }
+
+    &__grid-container {
+        background-color: transparent;
+
+        &--dark {
+            background-color: $dark-chart;
+        }
+    }
+
+    &__grid-items {
+        background-color: $white;
+        box-sizing: border-box;
+
+        &--dark {
+            background-color: $dark-chart !important;
+        }
     }
 }
 
@@ -529,6 +602,7 @@ export default {
 .vue-grid-item .static {
     background: #cce;
 }
+
 .vue-grid-item {
     display: flex;
     justify-content: center;

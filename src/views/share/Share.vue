@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="share" :class="{'share--dark' : darkCharts}">
         <grid-layout
             ref="gridlayout"
             :layout.sync="layout"
@@ -21,10 +21,12 @@
                 :h="item.h"
                 :i="item.i"
                 class="share__items"
+                :class="{'share__items--dark' : darkCharts}"
             >
                 <Chart
                 v-if="!isLoading"
                 :isAdmin="false"
+                :darkMode="darkCharts"
                 :name="item.chart.name"
                 :type="item.chart.type"
                 :url="item.chart.url"
@@ -55,6 +57,7 @@ export default {
         return {
             isLoading: false,
             layout: [],
+            darkCharts: false,
         }
     },
     created() {
@@ -70,6 +73,7 @@ export default {
                     (res && res.layout) ? this.layout = res.layout : [];
                     (res && res.chartOptions) ? this.chartOptions = res.chartOptions : [];
                     (res && res.chartOptions) ? this.projectName = res.name : '';
+                    (res && res.isDarkCharts) ? this.darkCharts = res.isDarkCharts : false;
                     this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
                     console.error(err);
@@ -84,8 +88,13 @@ export default {
 @import '@/assets/main';
 
 .share {
+    &--dark {
+        background-color: $dark-chart;
+    }
     &__items {
-
+        &--dark {
+            background-color: $dark-chart !important;
+        }
     }
 }
 

@@ -41,6 +41,11 @@ export default {
 			required: false,
 			default: false,
 		},
+		darkMode: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
 	},
     data() {
     	return {
@@ -48,79 +53,89 @@ export default {
     		resizeHandler: null,
 			containerSizeObserver: null,
 			loadingChart: false,
-    }
-},
+    	}
+	},
+	watch: {
+		'darkMode':'initChart'
+	},
+	mounted() {
+		this.preDefinedOptions.title.text = this.name;
 
-mounted() {
-	this.preDefinedOptions.title.text = this.name;
-
-    this.resizeHandler = debounce(() => {
-      	if (this.chart) {
+    	this.resizeHandler = debounce(() => {
+      		if (this.chart) {
         		this.chart.resize()
-      	}
-    }, 100);
+      		}
+    	}, 100);
 
-	this.initResize();
-	this.fetchData(this.url)
-},
-
-beforeDestroy() {
-	this.destroyResize();
-	
-	if (!this.chart) {
-		return
-	};
-
-	this.chart.dispose();
-	this.chart = null;
-},
-
-methods: {
-	initChart() {
-		if(!this.chart) {
-			this.chart = echarts.init(this.$el, 'macarons', {renderer: 'svg'});
-		}
-		this.chart.clear();
-		this.chart.setOption(this.preDefinedOptions);
-		// this.chart.resize();
-	},
-    initResize() {
-		// see: https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
-    	// echarts resize api need to be called by parent element rather than window
-      	const parent = this.$el.parentElement.parentElement;
-
-		// Options for the observer (which mutations to observe)
-		const config = {
-    		attributes: true,
-    		// childList: true,
-    		// subtree: true
-  		};
-
-  		// Create an observer instance linked to the callback function
-		this.containerSizeObserver = new MutationObserver(this.resizeHandler);
-
-		// Start observing the target node for configured mutations
-		this.containerSizeObserver.observe(parent, config);
-
-    },
-    destroyResize() {
-    	this.containerSizeObserver.disconnect();
-	},
-	fetchData(url) {
-		this.loadingChart = true;
-		return chartDataService
-			.getByUrl(url)
-			.then(res => {
-				this.preDefinedOptions.series[0].data = res;
-			})
-			.then(() => this.initChart())
-			.catch(err => {
-				console.warn('Something woring when trying to fetch chart data:', err)
-			})
-			.finally(() => this.loadingChart = false)
-	},
-	refresh() {
+		this.initResize();
 		this.fetchData(this.url)
-	}
-  }
+	},
+	beforeDestroy() {
+		this.destroyResize();
+	
+		if (!this.chart) {
+			return
+		};
+
+		this.chart.dispose();
+		this.chart = null;
+	},
+	computed: {
+		getMode() {
+			return this.darkMode ? 'dark' : 'macarons';
+		},
+	},
+	methods: {
+		initChart() {
+			const mode = this.getMode;
+			console.log(this.getMode)
+			if (!this.chart) {
+				this.chart = echarts.init(this.$el, mode, {renderer: 'svg'});
+			} else {
+				this.chart.dispose();
+				this.chart = echarts.init(this.$el, mode, {renderer: 'svg'});
+			}
+	
+			this.chart.clear();
+			this.chart.setOption(this.preDefinedOptions);
+			// this.chart.resize();
+		},	
+    	initResize() {
+			// see: https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+    		// echarts resize api need to be called by parent element rather than window
+      		const parent = this.$el.parentElement.parentElement;
+
+			// Options for the observer (which mutations to observe)
+			const config = {
+    			attributes: true,
+    			// childList: true,
+    			// subtree: true
+  			};
+
+  			// Create an observer instance linked to the callback function
+			this.containerSizeObserver = new MutationObserver(this.resizeHandler);
+
+			// Start observing the target node for configured mutations
+			this.containerSizeObserver.observe(parent, config);
+    	},
+    	destroyResize() {
+    		this.containerSizeObserver.disconnect();
+		},
+		fetchData(url) {
+			this.loadingChart = true;
+			return chartDataService
+				.getByUrl(url)
+				.then(res => {
+					this.preDefinedOptions.series[0].data = res;
+				})
+				.then(() => this.initChart())
+				.catch(err => {
+					console.warn('Something woring when trying to fetch chart data:', err)
+				})
+				.finally(() => this.loadingChart = false)
+		},
+		refresh() {
+			this.fetchData(this.url)
+		}
+  	}
 }

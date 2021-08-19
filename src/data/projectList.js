@@ -8,7 +8,7 @@ export const projectList = {
     },
     {
         id: '00000000-0000-0000-0000-000000000001',
-        name: 'Jroject2',
+        name: 'Dark Charts',
         description: 'Created on 12/08/2021',
         timestamp: '1628778061000',
     },
