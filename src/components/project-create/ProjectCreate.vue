@@ -2,21 +2,21 @@
     <el-row>
         <el-col>
             <el-dialog 
-                title="Create Project"
+                :title="currentLang.createProject"
                 :visible="isCreateProjectModalOpen"
                 :before-close="toggleDialog"
                 width="30%"
                 :destory-on-close="true"
             >
                 <el-form :model="form" ref="form" status-icon :rules="rules">
-                    <el-form-item label="Project Name" prop="name">
+                    <el-form-item :label="currentLang.projectName" prop="name">
                         <el-input v-model="form.name" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Description">
+                    <el-form-item :label="currentLang.description">
                         <el-input
                             class="text-input--overwrite"
                             type="textarea"
-                            placeholder="(No description)"
+                            :placeholder="`(${currentLang.noDescription})`"
                             v-model="form.description"
                             maxlength="150"
                             show-word-limit
@@ -24,8 +24,8 @@
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click.native="toggleDialog">Cancel</el-button>
-                    <el-button class="button-plain--overwrite" @click.native="submit">Comfirm</el-button>
+                    <el-button type="primary"  @click.native="toggleDialog">{{ currentLang.cancel }}</el-button>
+                    <el-button class="button-plain--overwrite" @click.native="submit">{{ currentLang.confirm }}</el-button>
                 </div>
             </el-dialog>
         </el-col>
@@ -42,9 +42,9 @@ export default {
         let validateName = (rule, value, callback) => {
             const valueTrimmed = value.replace(/(^\s*)|(\s*$)/g, "")
             if (valueTrimmed === '') {
-                callback(new Error('Name is required'));
+                callback(new Error(`${this.currentLang.nameIsRequired}`));
             } else if(!/^[\u4E00-\u9FA5A-Za-z0-9 _.]+$/.test(valueTrimmed)) {
-                callback(new Error('Invalid name'))
+                callback(new Error(`${this.currentLang.invalid}`))
             } else {
                 callback();
             }
@@ -64,7 +64,10 @@ export default {
     computed: {
         ...mapState({
 			isCreateProjectModalOpen: state => state.projects.createProjectModalOpen
-        })
+        }),
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
+        }),
     },
     methods: {
         toggleDialog() {

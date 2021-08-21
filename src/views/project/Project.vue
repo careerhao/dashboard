@@ -65,7 +65,7 @@
 
                     <div class="project__feature-container">
                         <div class="project__feature-items">  
-                            <label>Dark</label> 
+                            <label>{{ currentLang.dark }}</label> 
                             <el-switch
                                 :value="darkCharts"
                                 name="Dark Mode"
@@ -75,7 +75,7 @@
                             </el-switch>
                         </div>
                         <div class="project__feature-items">
-                            <el-button plain size="small">Save</el-button>   
+                            <el-button plain size="small">{{ currentLang.save }}</el-button>   
                         </div>
                     </div>
                 </div>
@@ -122,15 +122,15 @@
         </el-container>
 
         <el-dialog
-            title="Warning"
+            :title="currentLang.removeModal.name"
             :visible.sync="isConfirmRemoveShow"
             width="30%"
         >       
-                <span>Are you confirm to remove </span>
+                <span> {{ currentLang.removeModal.message }} </span>
                 <strong><label class="confirm-modal__warning">{{ `${removingItemName} ?` }}</label></strong>
                 <span slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click.native="cancelRemove">Cancel</el-button>
-                    <el-button class="button-plain--overwrite" @click.native="removeChart">Confirm</el-button>
+                    <el-button type="primary"  @click.native="cancelRemove">{{ currentLang.cancel }}</el-button>
+                    <el-button class="button-plain--overwrite" @click.native="removeChart">{{ currentLang.confirm }}</el-button>
                 </span>
         </el-dialog>
 
@@ -169,9 +169,9 @@ export default {
         let validateName = (rule, value, callback) => {
             const valueTrimmed = value.replace(/(^\s*)|(\s*$)/g, "")
             if (valueTrimmed === '') {
-                callback(new Error('Name is required'));
+                callback(new Error(`${this.currentLang.nameIsRequired}`));
             } else if(!/^[\u4E00-\u9FA5A-Za-z0-9 _.]+$/.test(valueTrimmed)) {
-                callback(new Error('Invalid name'))
+                callback(new Error(`${this.currentLang.invalid}`))
             } else {
                 callback();
             }
@@ -238,6 +238,9 @@ export default {
         ...mapGetters('currentProject',{
             getCurrentProjectId: 'currentProjectId',
         }),
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
+        }),
         removingItemName() {
             return this.removingItem 
                     && this.removingItem.chart 
@@ -254,8 +257,8 @@ export default {
                     // TODO: Remove if-else when we can hit real endpoint, no just pulling from data/projects.js
                     // refresh page may lead to error since we fetch data by project id.
                     (res && res.layout) ? this.layout = res.layout : this.layout = [];
-                    (res && res.chartOptions) ? this.chartOptions = res.chartOptions : [];
-                    (res && res.chartOptions) ? this.projectName = res.name : this.projectName = 'Created Project';
+                    (res && res.chartOptions) ? this.chartOptions = res.chartOptions : this.chartOptions;
+                    (res && res.name) ? this.projectName = res.name : this.projectName = 'Created Project';
                     (res && res.isDarkCharts) ? this.darkCharts = res.isDarkCharts : false;
                     this.form.editingProjectName = this.projectName;
                     this.$store.dispatch('currentProject/setCurrentProject', res)
@@ -394,8 +397,8 @@ export default {
                         this.isEditing = false;
 
                         this.$notify({
-                            title: 'Success',
-                            message: `${data.name} has been updated`,
+                            title: `${this.currentLang.message.success}`,
+                            message: `${data.name} ${this.currentLang.message.updateSuccess}`,
                             type: 'success',
                             duration: 2000,
                         });
@@ -423,8 +426,8 @@ export default {
                         .then(res => {
                             if(res.status === 204) {
                                 this.$notify({
-                                    title: 'Success',
-                                    message: `${this.projectName} has been updated`,
+                                    title: `${this.currentLang.message.success}`,
+                                    message: `${this.projectName} ${this.currentLang.message.updateSuccess}`,
                                     type: 'success',
                                     duration: 2000,
                                     offset: 50
@@ -443,8 +446,8 @@ export default {
                         })
                         .catch(err => {
                             this.$notify.error({
-                                title: 'Error',
-                                message: `Update ${this.projectName} failed, due to ${err}, please try again.`,
+                                title: `${this.currentLang.message.error}`,
+                                message: `${this.projectName} ${this.currentLang.message.updateFail}`,
                                 duration: 0,
                                 offset: 50
                             });

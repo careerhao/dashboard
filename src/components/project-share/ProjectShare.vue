@@ -2,7 +2,7 @@
     <el-row class="project-share">
         <el-col>
             <el-dialog
-                title="Share Project"
+                :title="currentLang.shareModal.name"
                 :visible="isSharingProjectModalOpen"
                 :before-close="toggleDialog"
                 width="30%"
@@ -12,7 +12,7 @@
                     <el-tab-pane label="Url" name="first">
                         <div class="project-share__content">
                             <div class="project-share__label">
-                                <label>Please tell our friend to visit the following link: </label>
+                                <label>{{ currentLang.shareModal.urlMessage}}</label>
                                 <div class="project-share__icon"  @click="copy('id')">
                                     <i class="el-icon-document-copy" />
                                 </div>
@@ -28,16 +28,16 @@
                             </div>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="Name" name="second">
+                    <el-tab-pane :label="currentLang.name" name="second">
                         <div class="project-share__content">
                             <div class="project-share__label">
-                                <label> {{ `Here is the project name: ${projectInfo.name} `}}</label>
+                                <label> {{ `${ currentLang.shareModal.hereIsName}: ${projectInfo.name} `}}</label>
                                 <div class="project-share__icon"  @click="copy('name')">
                                     <i class="el-icon-document-copy" />
                                 </div>
                             </div>
                             <div class="project-share__label--column">
-                                <label>Let's hit the following link: </label>
+                                <label>{{ `${currentLang.shareModal.visitLink}: ` }}</label>
                                 <el-link
                                     type="info"
                                     class="project-share__link"
@@ -77,6 +77,9 @@ export default {
         ...mapState({
             isSharingProjectModalOpen: state => state.projects.isSharingProjectModalOpen,
         }),
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
+        }),
         getUrl() {
             // For github gh-page, normal url should remove this /dashboard/
             return `${window.location.origin}${ghUrl}/#/share/`;
@@ -108,16 +111,16 @@ export default {
             if (document.execCommand("copy")) {
                 document.execCommand("copy");
                 this.$notify({
-                    title: 'Success',
+                    title: `${this.currentLang.message.success}`,
                     type: 'success',
-                    message: `Copied ${tempData} to the clipboard`,
+                    message: `${tempData} ${currentLang.message.shareSuccess}`,
                     duration: 2000,
                     offset: 50
                 });
             } else {
                 this.$notify.error({
-                    title: 'Failed',
-                    message: `Copied ${tempData} to the clipboard failed`,
+                    title: `${this.currentLang.message.error}`,
+                    message: `${tempData} ${currentLang.message.shareFail}`,
                     duration: 0,
                     offset: 50
                 });

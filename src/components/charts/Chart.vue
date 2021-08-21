@@ -22,14 +22,14 @@
                         :disabled="isEmptyChart"
                         @click.native="refresh"
                     >
-                        Refresh
+                        {{ currentLang.refresh }}
                     </el-dropdown-item>
                     <el-dropdown-item 
                         icon="el-icon-edit" 
                         class="el-dropdown-items"
                         @click.native="edit"
                     >
-                        Edit
+                        {{ currentLang.edit }}
                     </el-dropdown-item>
                     <el-dropdown-item 
                         icon="el-icon-delete" 
@@ -37,7 +37,7 @@
                         divided
                         @click.native="remove"
                     >
-                        Remove
+                        {{ currentLang.remove }}
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import PieChart from './chart-type/PieChart';
 import RosePieChart from './chart-type/RosePieChart';
 import LineChart from './chart-type/LineChart';
@@ -91,6 +92,9 @@ export default {
         },
     },
     computed: {
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
+        }),
         isEmptyChart() {
             return this.url === '';
         },
