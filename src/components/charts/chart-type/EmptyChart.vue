@@ -2,23 +2,30 @@
     <div class="empty-chart" >
        <div class="empty-chart__wrapper">
             <div class="empty-chart__background">
-                <span>Please fill in the data</span>
+                <span>{{ currentLang.emptyMessage }}</span>
             </div>
             <div class="empty-chart__button">
-                <el-button plain @click.native="editFromEmpty">Edit</el-button>
+                <el-button plain @click.native="editFromEmpty">{{ currentLang.edit }}</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: 'EmptyChart',
+    computed: {
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
+        })
+    },
     methods: {
         editFromEmpty() {
             this.$emit('editFromEmpty');
         }
-    }
+    },
+
 }
 </script>
 

@@ -2,17 +2,17 @@
     <el-row>
         <el-col>
             <el-dialog 
-                title="Edit Chart" 
+                :title="currentLang.editChart" 
                 :visible="isEditShow" 
                 :before-close="toggleDialog"
                 width="30%"
                 :destroy-on-close="true"
             > 
                     <el-form :model="form">
-                    <el-form-item label="Chart Name">
+                    <el-form-item :label="currentLang.chartName">
                         <el-input v-model="form.name" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Chart Type">
+                    <el-form-item :label="currentLang.chartType">
                         <el-input v-model="form.type" disabled autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item>
@@ -39,8 +39,8 @@
 
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click.native="toggleDialog">Cancel</el-button>
-                    <el-button class="button-plain--overwrite" @click.native="submit">Comfirm</el-button>
+                    <el-button type="primary"  @click.native="toggleDialog">{{ currentLang.cancel }}</el-button>
+                    <el-button class="button-plain--overwrite" @click.native="submit">{{ currentLang.confirm }}</el-button>
                 </div>
             </el-dialog>
         </el-col>
@@ -74,6 +74,9 @@ export default {
     computed: {
         ...mapState({
 			isEditShow: state => state.currentProject.isEditChartShow,
+        }),
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
         }),
         byUrl() {
             return this.dataSource === 1;

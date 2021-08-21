@@ -22,7 +22,7 @@
   			    <div class="project-card__description">
     			    <div class="project-card__wrapper">
                         <span class="project-card__description-text project-card__description--none" v-if="item.description === ''">
-                            <i>(No description)</i>
+                            <i>{{ `(${currentLang.noDescription})` }}</i>
                         </span>
                         <span v-else class="project-card__description-text">
                             {{ item.description }}
@@ -33,7 +33,7 @@
                             project-card__description-modified
                             project-card__description--none "
                     >
-                        Last modified: {{ parseTime(item.timestamp) }}
+                        {{ currentLang.lastModified }}: {{ parseTime(item.timestamp) }}
                     </i>
   			    </div>
                 <div class="project-card__footer">
@@ -49,14 +49,14 @@
                                     :disabled="isProjectCreating(item.id)"
                                     @click.native="editProject(item)"
                                 >
-                                    Edit
+                                    {{ currentLang.edit }}
                                 </el-dropdown-item>
                                 <el-dropdown-item
                                     icon="el-icon-share"
                                     class="el-dropdown-items"
                                     @click.native="shareProject(item)"
                                 >
-                                    Share
+                                    {{ currentLang.share }}
                                 </el-dropdown-item>
                                 <el-dropdown-item
                                     icon="el-icon-delete"
@@ -65,7 +65,7 @@
                                     divided
                                     @click.native="removeProject(item)"
                                 >
-                                    Remove
+                                    {{ currentLang.remove }}
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -79,7 +79,7 @@
                             :loading="isProjectCreating(item.id)"
                             @click.native="selectProject(item)"
                         >
-                            GO
+                            {{ currentLang.open }}
                         </el-button>
                     </div>
                 </div>
@@ -115,6 +115,9 @@ export default {
     computed: {
         ...mapGetters('projects',{
             isProjectCreating: 'isProjectCreating',
+        }),
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
         }),
     },
     methods: {
@@ -175,6 +178,7 @@ export default {
 
         &-text {
             font-size: .75rem;
+            color: $gray;
             word-wrap: break-word;
             word-break: break-all;
         }

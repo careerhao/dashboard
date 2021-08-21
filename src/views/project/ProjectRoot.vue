@@ -2,12 +2,13 @@
     <div class="project-root">
 		<el-row>
 			<el-col class="project-root__header">
-				<div>
+				<!-- Shold this alive or not? -->
+				<!-- <div>
 					<el-autocomplete
 						class="project-root__search"
 						v-model="search"
 						:fetch-suggestions="querySearch"
-						placeholder="Search Project"
+						:placeholder="currentLang.search"
 						@select="selectProject"
 					>
 						<i
@@ -16,7 +17,7 @@
     					>
   						</i>
 					</el-autocomplete>
-				</div>
+				</div> -->
 				<!-- <div>
 					<el-button
 						plain
@@ -54,15 +55,15 @@
 		/>
 
 		<el-dialog
-            title="Warning"
+            :title="currentLang.removeModal.name"
             :visible.sync="removeProjectConfirm"
             width="30%"
         >       
-                <span>Are you confirm to remove </span>
+                <span>{{ currentLang.removeModal.message }} </span>
                 <strong><label class="confirm-modal__warning">{{ `${editingProjectInfo.name} ?` }}</label></strong>
                 <span slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click.native="toggleRemoveConfimation">Cancel</el-button>
-                    <el-button class="button-plain--overwrite" @click.native="confirmRemove">Confirm</el-button>
+                    <el-button type="primary"  @click.native="toggleRemoveConfimation">{{ currentLang.cancel }}</el-button>
+                    <el-button class="button-plain--overwrite" @click.native="confirmRemove">{{ currentLang.confirm }}</el-button>
                 </span>
         </el-dialog>
     </div>
@@ -102,6 +103,9 @@ export default {
 		...mapGetters('projects', {
 			isProjectLoading: 'isProjectLoading',
 			getProjectLists: 'sortProjectListByTimestamp',
+		}),
+		...mapGetters('config', {
+			currentLang: 'currentLang',
 		}),
 	},
 	methods: {
@@ -151,8 +155,8 @@ export default {
 						// this.isEditingProject = false;
 						// this.editingProjectInfo = {};
 						this.$notify({
-                            title: 'Success',
-                            message: `${form.name} has been updated`,
+                            title: `${this.currentLang.message.success}`,
+                            message: `${form.name} ${this.currentLang.message.updateSuccess}`,
                             type: 'success',
 							duration: 2000,
 							offset: 50
@@ -172,8 +176,8 @@ export default {
 				.catch(err => {
 					this.isEditingProject = false;
 					this.$notify.error({
-          				title: 'Error',
-						message: `Update ${form.name} failed, due to ${err}, please try again.`,
+          				title: `${this.currentLang.message.error}`,
+						message: `${form.name} ${this.currentLang.message.updateFail}`,
 						duration: 0,
 						offset: 50
 					});
@@ -202,8 +206,8 @@ export default {
 							this.$store.dispatch('projects/removeProject', this.editingProjectInfo.id)
 
 							this.$notify({
-                            	title: 'Success',
-                            	message: `${this.editingProjectInfo.name} has been deleted`,
+                            	title: `${this.currentLang.message.success}`,
+                            	message: `${this.editingProjectInfo.name} ${this.currentLang.message.removeSuccess}`,
                             	type: 'success',
 								duration: 2000,
 								offset: 50
@@ -212,8 +216,8 @@ export default {
 					})
 					.catch(err => {
 						this.$notify.error({
-							title: 'Error',
-							message: `Delete ${this.editingProjectInfo.name} failed, please try again.`,
+							title: `${this.currentLang.message.error}`,
+							message: `${this.editingProjectInfo.name} ${this.currentLang.message.removeFail}`,
 							duration: 0,
 							offset: 50
 						});

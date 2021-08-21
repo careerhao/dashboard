@@ -1,14 +1,14 @@
 .el-dropdown-items {
     &:hover {
-        background-color: $almost-gray;
-        color: $almost-black;
+        background-color: $almost-gray !important;
+        color: $almost-black !important;
     }
     &--danger {
         color: $almost-red;
 
         &:hover {
-            background-color: $almost-red;
-            color: $white;
+            background-color: $almost-red !important;
+            color: $white !important;
         }
     }
 }

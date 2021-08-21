@@ -10,7 +10,7 @@
                                 <el-input
                                     class="share-root__input"
                                     v-model="form.name"
-                                    placeholder="Project Name"
+                                    :placeholder="`${currentLang.projectName}`"
                                 />
                             </el-form-item>
                         </el-form>
@@ -20,7 +20,7 @@
                             @click.native="redirect"
                             :loading="loading"
                         >
-                            Let's Go
+                            {{ currentLang.explore }}
                         </el-button>
                     </div>
                 </div>
@@ -40,9 +40,9 @@ export default {
         let validateName = (rule, value, callback) => {
             const valueTrimmed = value.replace(/(^\s*)|(\s*$)/g, "")
             if (valueTrimmed === '') {
-                callback(new Error('Name is required'));
+                callback(new Error(`${this.currentLang.nameIsRequired}`));
             } else if(!/^[\u4E00-\u9FA5A-Za-z0-9 _.]+$/.test(valueTrimmed)) {
-                callback(new Error('Invalid name'))
+                callback(new Error(`${this.currentLang.invalid}`))
             } else {
                 callback();
             }
@@ -59,6 +59,11 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
+        })
+    },
     methods: {
         redirect() {
             this.$refs.form.validate((valid) => {
@@ -72,8 +77,8 @@ export default {
                             console.error(err);
 
                             this.$notify.error({
-                                title: 'Error',
-                                message: `Cannot find the project, please try again.`,
+                                title: `${this.currentLang.message.error}`,
+                                message: `${this.currentLang.message.cannotFind}`,
                                 duration: 0,
                             });
                             throw err;

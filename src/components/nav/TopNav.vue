@@ -1,22 +1,21 @@
 <template>
     <nav class="nav">
         <div class="nav__content">
-            <div class="nav__left" @click="backToHome">
-                <div class="nav__home">
+            <div class="nav__left">
+                <div class="nav__home" @click="backToHome">
                     <i class="el-icon-s-home nav__left-icon" />
                     <span>Dashboard</span>
                 </div>
-            </div>
-            <div class="nav__right">
                 <div class="nav__projects">
-                    <el-dropdown trigger="click" size="small">
+                    <el-dropdown size="small" trigger="click">
                         <el-button plain size="small" class="nav__projects--left-button">
-                            My projects
+                            {{ currentLang.myProject }}
                         <i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item
                                 v-for="project in getProjectLists"
+                                class="el-dropdown-items"
                                 :key="project.id"
                                 :disabled="isProjectCreating(project.id)"
                                 @click.native="selectProject(project.id)"
@@ -27,14 +26,35 @@
                     </el-dropdown>
                     <el-button 
                         plain 
-                        size="small" 
+                        size="small"
                         class="nav__projects--right-button"
                         @click.native="createProject"
                     >
                         <i class="el-icon-plus" />
                     </el-button>
                 </div>
-                <!-- <span>Hao</span> -->
+            </div>
+            
+            <div class="nav__right">
+                <el-dropdown trigger="click">
+                    <div class="nav__right-icon">
+                        <TranslateIcon />
+                    </div>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item 
+                            class="el-dropdown-items"
+                            @click.native="selectLanguage('zh_CN')"
+                        >
+                            简体中文
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                            class="el-dropdown-items"
+                            @click.native="selectLanguage('en')"
+                        >
+                            English
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
         </div>
 
@@ -50,12 +70,14 @@
 import { mapState, mapGetters } from 'vuex';
 import projectServices from '@/services/projectList';
 import ProjectCreate from '@/components/project-create/ProjectCreate';
+import TranslateIcon from '@/components/icons/TranslateIcon'
 import { guid } from '@/utils';
 
 export default {
     name: 'TopNav',
     components: {
         ProjectCreate,
+        TranslateIcon,
     },
     mounted() {
         this.fetchData();
@@ -73,7 +95,10 @@ export default {
         ...mapGetters('projects', {
             getProjectLists: 'sortProjectListByTimestamp',
             isProjectCreating: 'isProjectCreating',
-		}),
+        }),
+        ...mapGetters('config', {
+            currentLang: 'currentLang',
+        })
     },
     methods: {
         fetchData() {
@@ -94,7 +119,11 @@ export default {
                 path: '/'
             })
         },
+        selectLanguage(lang) {
+            this.$store.dispatch('config/selectLanguage', lang);
+        },
         selectProject(projectId) {
+            console.log('????')
 			this.$router.push({
 				path: `/projects/${projectId}`,
 			});
@@ -130,8 +159,8 @@ export default {
 				.then(res => {
 					if(res.status === 204) {
 						this.$notify({
-                            title: 'Success',
-                            message: `${payload.name} has been created`,
+                            title: `${this.currentLang.message.success}`,
+                            message: `${payload.name} ${this.currengLang.message.createSuccess}`,
                             type: 'success',
 							duration: 2000,
 							offset: 50
@@ -142,8 +171,8 @@ export default {
 				})
 				.catch(err => {
 					this.$notify.error({
-          				title: 'Error',
-						message: `Create ${payload.name} failed, due to ${err}, please try again.`,
+          				title: `${this.currentLang.message.error}`,
+						message: `${payload.name} ${this.currentLang.message.createFail}`,
 						duration: 0,
 						offset: 50
 					});
@@ -188,9 +217,7 @@ export default {
     }
 
     &__projects {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        padding: 0 8rem;
 
         &--right-button {
             // margin-left: 0 !important;
@@ -198,11 +225,17 @@ export default {
             padding-right: 5px !important;
             border-top-left-radius: 0 !important;
             border-bottom-left-radius: 0 !important;
+
+            color: $gray;
         }
         &--left-button {
             margin-right: 0 !important;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
+
+            // overwrite el-button padding so use px instead of rem
+            padding: 9px 50px !important;
+            color: $gray;
         }
     }
 
@@ -234,6 +267,17 @@ export default {
         padding-left: 1rem;
         padding-right: 2rem;
         width: 100%;
+    }
+
+    &__right-icon {
+        height: 1.5rem;
+        width: 1.5rem;
+
+        cursor: pointer;
+
+        svg {
+            fill: $gray;
+        }
     }
 }
 
