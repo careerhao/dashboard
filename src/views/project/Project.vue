@@ -259,7 +259,8 @@ export default {
                     (res && res.layout) ? this.layout = res.layout : this.layout = [];
                     (res && res.chartOptions) ? this.chartOptions = res.chartOptions : this.chartOptions;
                     (res && res.name) ? this.projectName = res.name : this.projectName = 'Created Project';
-                    (res && res.isDarkCharts) ? this.darkCharts = res.isDarkCharts : false;
+                    (res && res.isDarkCharts !== undefined) ? this.darkCharts = res.isDarkCharts : false;
+                    console.log(res.isDarkCharts)
                     this.form.editingProjectName = this.projectName;
                     this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
