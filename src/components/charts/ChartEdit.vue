@@ -39,8 +39,20 @@
 
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click.native="toggleDialog">{{ currentLang.cancel }}</el-button>
-                    <el-button class="button-plain--overwrite" @click.native="submit">{{ currentLang.confirm }}</el-button>
+                    <el-button 
+                        type="plain" 
+                        class="button--overwrite button-secondary--overwrite" 
+                        @click.native="toggleDialog"
+                    >
+                        {{ currentLang.cancel }}
+                    </el-button>
+                    <el-button 
+                        type="primary" 
+                        class="button--overwrite button-primary--overwrite" 
+                        @click.native="submit"
+                    >
+                        {{ currentLang.confirm }}
+                    </el-button>
                 </div>
             </el-dialog>
         </el-col>

@@ -15,8 +15,8 @@
                             </el-form-item>
                         </el-form>
                         <el-button
-                            class="share-root__button"
-                            plain
+                            class="button--overwrite button-primary--overwrite share-root__button"
+                            type="primary"
                             @click.native="redirect"
                             :loading="loading"
                         >
@@ -101,6 +101,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    height: 100vh;
 
     &__wrapper {
         height: 40rem;

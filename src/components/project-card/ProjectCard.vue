@@ -62,7 +62,6 @@
                                     icon="el-icon-delete"
                                     class="el-dropdown-items--danger"
                                     :disabled="isProjectCreating(item.id)"
-                                    divided
                                     @click.native="removeProject(item)"
                                 >
                                     {{ currentLang.remove }}
@@ -72,9 +71,9 @@
                     </div>
                     <div class="project-card__open">
                         <el-button
-                            plain
+                            type="primary"
+                            class="button--overwrite button-primary--overwrite"
                             size="medium"
-                            class="button-plain--overwrite"
                             :disabled="isProjectCreating(item.id)"
                             :loading="isProjectCreating(item.id)"
                             @click.native="selectProject(item)"
@@ -157,7 +156,7 @@ export default {
 
     &__box {
         background-color: $white;
-        border:1px solid $almost-gray;
+        // border:1px solid $almost-gray;
         border-radius: $border-radius;
 
         &--disabled {

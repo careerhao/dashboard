@@ -1,11 +1,38 @@
 @import '@/assets/modules/_all';
 
-.button-plain--overwrite {
-    &:hover {
-        background-color: $white;
-        border-color: $almost-black;
-        color: $almost-black;
+.button {
+    &--overwrite {
+        border-radius: var(--btn__borderRadius);
+        font-weight: var(--btn__fontWeight);
+        font-family: var(--btn__fontFamily);
+        text-transform: var(--btn__textTransform);
+        border: none;
     }
+}
+
+.button-primary {
+    &--overwrite {
+        background-color: var(--btn-primary__backgroundColor);
+        color: var(--btn-primary__color);
+
+        &:hover {
+            background-color: var(--btn-primary__hover);
+        }
+    }
+}
+
+.button-secondary {
+    &--overwrite {
+        background-color: var(--btn-secondary__backgroundColor);
+        color: var(--btn-secondary__color);
+    }
+}
+.button-plain--overwrite {
+    // &:hover {
+        // background-color: $white;
+        // border-color: $almost-black;
+        // color: $almost-black;
+    // }
 }
 
 .el-button--info,
@@ -15,20 +42,17 @@
 .el-button--success,
 .el-button--warning,
 .el-button--danger {
-    border-color: $almost-gray;
-    color: $almost-black;
+    // border-color: $almost-gray;
+    // color: $almost-black;
 
-    &:hover {
-        border-color: $almost-black;
-    }
-}
-
-.el-button--primary{
-    background-color: $light-gray;
+    // &:hover {
+    //     border-color: $almost-black;
+    // }
+    border-radius: $border-radius;
 }
 
 .el-button.is-plain:focus, .el-button.is-plain:hover {
-    background: #FFF;
-    border-color: black;
-    color: black;
+    // background: #FFF;
+    // border-color: black;
+    // color: black;
 }

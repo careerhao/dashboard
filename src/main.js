@@ -37,6 +37,7 @@ import {
   TabPane,
   Link,
   Switch,
+  Drawer,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -72,6 +73,7 @@ Vue.use(Tabs);
 Vue.use(TabPane);
 Vue.use(Link);
 Vue.use(Switch);
+Vue.use(Drawer);
 
 Vue.prototype.$notify = Notification;
 

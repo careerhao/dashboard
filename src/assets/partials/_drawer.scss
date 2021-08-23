@@ -1,0 +1,12 @@
+.el-drawer {
+    // background-color: var(--nav__backgroundColor);
+
+    box-shadow: none;
+
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+}
+
+.el-drawer__body {
+    padding: 0 1rem;
+}

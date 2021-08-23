@@ -1,0 +1,26 @@
+@import '@/assets/modules/_all';
+
+:root {
+    --nav__fontFamily: 'Roboto', sans-serif;
+    --nav__fontWeight: normal;
+    --nav__color: #{$gray-light};
+    --nav__textTransform: none;
+    --nav__backgroundColor: #{$white};
+
+  
+    --btn__borderRadius: #{$border-radius};
+    --btn__fontFamily: 'Roboto', sans-serif;
+    --btn__fontWeight: normal;
+    --btn__textTransform: none;
+  
+    --btn-primary__backgroundColor: #{$blue};
+    --btn-primary__hover: #{$blue-hover};
+    --btn-primary__color: #{$white};
+  
+    --btn-secondary__backgroundColor: #{$white};
+    --btn-secondary__color: #{$gray};
+  
+    --input-text__backgroundColor: #{$white-gray};
+    --input-text__color: #{$almost-black};
+    --input-text__opacity: 1;
+  }

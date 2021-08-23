@@ -5,7 +5,13 @@
                 <span>{{ currentLang.emptyMessage }}</span>
             </div>
             <div class="empty-chart__button">
-                <el-button plain @click.native="editFromEmpty">{{ currentLang.edit }}</el-button>
+                <el-button 
+                    type="primary" 
+                    class="button--overwrite button-primary--overwrite" 
+                    @click.native="editFromEmpty"
+                >
+                    {{ currentLang.edit }}
+                </el-button>
             </div>
         </div>
     </div>
@@ -46,7 +52,7 @@ export default {
         width: 100%;
         height: 100%;
 
-        background-color: $light-gray;
+        background-color: $white;
         color: $almost-black;
     }
 

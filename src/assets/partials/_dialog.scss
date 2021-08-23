@@ -1,0 +1,11 @@
+@import '@/assets/modules/_all';
+
+.el-dialog {
+    border-radius: $border-radius !important;
+
+    background-color: var(--nav__backgroundColor);
+}
+
+.el-dialog__title {
+    color: var(--label__color);
+}

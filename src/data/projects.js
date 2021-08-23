@@ -128,13 +128,15 @@ export const projects = {
                     {   id: '00000001-0000-0000-0000-000000000000',
                         type: 'pie-chart',
                         name: 'Pie Chart1',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/pie-simple.webp?_v_=1627897138964'
                     },
                     {
                         id: '00000002-0000-0000-0000-000000000000',
                         type: 'rose-pie-chart',
                         name: 'Pie Chart2',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/pie-roseType-simple.webp?_v_=1627897138964',
                     }
                 ],
                 value: 'Pie Chart',
@@ -147,7 +149,8 @@ export const projects = {
                         id: '00000003-0000-0000-0000-000000000000',
                         type: 'line-chart',
                         name: 'Line Chart',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/area-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Line Chart',
@@ -160,7 +163,9 @@ export const projects = {
                         id: '00000004-0000-0000-0000-000000000000',
                         type: 'bar-chart',
                         name: 'Bar Chart',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/bar-stack.webp?_v_=1627897138964'
+                        
                     }
                 ],
                 value: 'Bar Chart',
@@ -296,13 +301,15 @@ export const projects = {
                     {   id: '00000001-0000-0000-0000-000000000000',
                         type: 'pie-chart',
                         name: 'Pie Chart1',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/pie-simple.webp?_v_=1627897138964'
                     },
                     {
                         id: '00000002-0000-0000-0000-000000000000',
                         type: 'rose-pie-chart',
                         name: 'Pie Chart2',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/pie-roseType-simple.webp?_v_=1627897138964',
                     }
                 ],
                 value: 'Pie Chart',
@@ -313,9 +320,10 @@ export const projects = {
                 categories: [
                     {
                         id: '00000003-0000-0000-0000-000000000000',
-                        type: 'line',
+                        type: 'line-chart',
                         name: 'Line Chart',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/area-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Line Chart',
@@ -328,7 +336,9 @@ export const projects = {
                         id: '00000004-0000-0000-0000-000000000000',
                         type: 'bar-chart',
                         name: 'Bar Chart',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/bar-stack.webp?_v_=1627897138964'
+                        
                     }
                 ],
                 value: 'Bar Chart',
@@ -338,7 +348,7 @@ export const projects = {
     },
     {
         id: '00000000-0000-0000-0000-000000000002',
-        name: 'Prject3',
+        name: 'Project3',
         isDarkCharts: false,
         layout: [
             {"x":0,"y":0,"w":5,"h":8,"i":"0", "chart" : {
@@ -370,13 +380,15 @@ export const projects = {
                     {   id: '00000001-0000-0000-0000-000000000000',
                         type: 'pie-chart',
                         name: 'Pie Chart1',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-simple.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/pie-simple.webp?_v_=1627897138964'
                     },
                     {
                         id: '00000002-0000-0000-0000-000000000000',
                         type: 'rose-pie-chart',
                         name: 'Pie Chart2',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/pie-roseType-simple.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/pie-roseType-simple.webp?_v_=1627897138964',
                     }
                 ],
                 value: 'Pie Chart',
@@ -387,9 +399,10 @@ export const projects = {
                 categories: [
                     {
                         id: '00000003-0000-0000-0000-000000000000',
-                        type: 'line',
+                        type: 'line-chart',
                         name: 'Line Chart',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/area-stack.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/area-stack.webp?_v_=1627897138964'
                     }
                 ],
                 value: 'Line Chart',
@@ -402,7 +415,9 @@ export const projects = {
                         id: '00000004-0000-0000-0000-000000000000',
                         type: 'bar-chart',
                         name: 'Bar Chart',
-                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964'
+                        thumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/bar-stack.webp?_v_=1627897138964',
+                        darkThumburl: 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb-dark/bar-stack.webp?_v_=1627897138964'
+                        
                     }
                 ],
                 value: 'Bar Chart',

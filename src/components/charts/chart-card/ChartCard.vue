@@ -43,7 +43,7 @@ export default {
     computed: {
         imageOk() {
             return this.imageurl !== '' && this.isImageLoaded && !this.isImageError;
-        }
+        },
     },
     methods: {
         imageLoaded() {
@@ -92,13 +92,27 @@ export default {
 .el-submenu .el-menu-item {
     height: auto !important;
     padding: 0.5rem 1.25rem !important;
+    background-color: var(--app__backgroundColor);
 
     &:first-child {
         padding-top: 0;
     }
 
     &:hover {
-        background-color: $light-gray;
+        background-color: $almost-gray;
+    }
+}
+
+.el-menu-item-group__title {
+    padding: 0 !important;
+}
+
+.el-submenu__title {
+    color: var(--label__color);
+
+    &:hover {
+        background-color: var(--app__backgroundColor);
+        color: var(--label__color);
     }
 }
 </style>   

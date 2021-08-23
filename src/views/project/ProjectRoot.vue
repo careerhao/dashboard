@@ -62,8 +62,20 @@
                 <span>{{ currentLang.removeModal.message }} </span>
                 <strong><label class="confirm-modal__warning">{{ `${editingProjectInfo.name} ?` }}</label></strong>
                 <span slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click.native="toggleRemoveConfimation">{{ currentLang.cancel }}</el-button>
-                    <el-button class="button-plain--overwrite" @click.native="confirmRemove">{{ currentLang.confirm }}</el-button>
+                    <el-button 
+						type="plain" 
+						class="button--overwrite button-secondary--overwrite" 
+						@click.native="toggleRemoveConfimation"
+					>
+						{{ currentLang.cancel }}
+					</el-button>
+                    <el-button 
+						type="primary" 
+						class="button--overwrite button-primary--overwrite" 
+						@click.native="confirmRemove"
+					>
+						{{ currentLang.confirm }}
+					</el-button>
                 </span>
         </el-dialog>
     </div>
@@ -285,4 +297,8 @@ export default {
         color: $almost-red;
     }
 }
+
+// /deep/ .el-dropdown-menu, .el-popper {
+//     background-color: var(--nav__backgroundColor) !important;
+// }
 </style>

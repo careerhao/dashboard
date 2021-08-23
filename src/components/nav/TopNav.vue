@@ -8,11 +8,13 @@
                 </div>
                 <div class="nav__projects">
                     <el-dropdown size="small" trigger="click">
-                        <el-button plain size="small" class="nav__projects--left-button">
+                        <el-button type="primary" size="small" class="nav__projects--left-button button--overwrite button-primary--overwrite">
                             {{ currentLang.myProject }}
                         <i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
-                        <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-menu 
+                            class="dropdown-overwrite"
+                            slot="dropdown">
                             <el-dropdown-item
                                 v-for="project in getProjectLists"
                                 class="el-dropdown-items"
@@ -25,9 +27,9 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                     <el-button 
-                        plain 
+                        type="primary" 
                         size="small"
-                        class="nav__projects--right-button"
+                        class="nav__projects--right-button button--overwrite button-primary--overwrite"
                         @click.native="createProject"
                     >
                         <i class="el-icon-plus" />
@@ -36,7 +38,41 @@
             </div>
             
             <div class="nav__right">
-                <el-dropdown trigger="click">
+                <div class="nav__icon-wrapper el-dropdown-selfdefine">
+                    <a 
+                        class="nav__github" 
+                        target="_blank"
+                        href="https://github.com/careerhao/dashboard"
+                    >
+                        <div class="nav__github-icon">
+                            <GithubIcon />
+                        </div>
+                        Github
+                    </a>
+                </div>
+                <div class="nav__icon-wrapper nav__right-icon el-dropdown-selfdefine" @click="toggleThemeConfig">
+                    <ThemeIcon />
+                </div>
+                <!-- <el-dropdown trigger="click" class="nav__icon-wrapper">
+                    <div class="nav__right-icon">
+                        <ThemeIcon />
+                    </div>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item 
+                            class="el-dropdown-items"
+                            @click.native="selectTheme('dark')"
+                        >
+                            Dark
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                            class="el-dropdown-items"
+                            @click.native="selectTheme('light')"
+                        >
+                            Light
+                        </el-dropdown-item>
+                    </el-dropdown-menu> -->
+                <!-- </el-dropdown> -->
+                <el-dropdown class="nav__icon-wrapper" trigger="click">
                     <div class="nav__right-icon">
                         <TranslateIcon />
                     </div>
@@ -63,6 +99,53 @@
 			@submitForm="createNewProject"
 			@toggleCreateProjectModal="toggleCreateProjectModal"
 		/>
+
+        <el-drawer
+            :visible.sync="isThemeConfigOpen"
+            size="15%"
+            direction="rtl"
+            :modal="false"
+            :show-close="false"
+        >
+            <div class="theme-lists-wrapper theme-lists__item">
+                <span>Theme</span>
+                <el-radio-group :value="currentTheme" size="small">
+                    <el-radio-button label="dark" @click.native="selectTheme('dark')"></el-radio-button>
+                    <el-radio-button label="light" @click.native="selectTheme('light')"></el-radio-button>
+                </el-radio-group>
+            </div>
+            
+                    <div class="theme-lists-wrapper">
+                        <div class="theme-lists__item">
+                            <span>App Main</span>
+                            <div class="theme-lists__indicator" :style="`background-color: ${theme.appBackgroundColor};`"></div>
+                        </div>
+                        <div class="theme-lists__item">
+                            <span>Nav Background</span>
+                            <div class="theme-lists__indicator" :style="`background-color: ${theme.nav.backgroundColor};`"></div>
+                        </div>
+                        <div class="theme-lists__item">
+                            <span>Nav Color</span>
+                            <div class="theme-lists__indicator" :style="`background-color: ${theme.nav.color};`"></div>
+                        </div>
+                        <div class="theme-lists__item">
+                            <span>Button Primary</span>
+                            <div class="theme-lists__indicator" :style="`background-color: ${theme.button.primary.backgroundColor};`"></div>
+                        </div>
+                        <div class="theme-lists__item">
+                            <span>Button Secondary</span>
+                            <div class="theme-lists__indicator" :style="`background-color: ${theme.button.secondary.backgroundColor};`"></div>
+                        </div>
+                        <div class="theme-lists__item">
+                            <span>Label</span>
+                            <div class="theme-lists__indicator" :style="`background-color: ${theme.labelColor};`"></div>
+                        </div>
+                        <div class="theme-lists__item">
+                            <span>Input Background</span>
+                            <div class="theme-lists__indicator" :style="`background-color: ${theme.inputText.backgroundColor};`"></div>
+                        </div>
+                    </div>
+        </el-drawer>
     </nav>
 </template>
 
@@ -70,7 +153,9 @@
 import { mapState, mapGetters } from 'vuex';
 import projectServices from '@/services/projectList';
 import ProjectCreate from '@/components/project-create/ProjectCreate';
-import TranslateIcon from '@/components/icons/TranslateIcon'
+import TranslateIcon from '@/components/icons/TranslateIcon';
+import ThemeIcon from '@/components/icons/ThemeIcon';
+import GithubIcon from '@/components/icons/GithubIcon';
 import { guid } from '@/utils';
 
 export default {
@@ -78,6 +163,8 @@ export default {
     components: {
         ProjectCreate,
         TranslateIcon,
+        ThemeIcon,
+        GithubIcon,
     },
     mounted() {
         this.fetchData();
@@ -85,12 +172,15 @@ export default {
     data() {
         return {
             search: '',
+            isThemeConfigOpen: false,
         }
     },
     computed: {
         ...mapState({
             projects: state => state.projects.projectList,
             isCreateProjectModalOpen: state => state.projects.createProjectModalOpen,
+            currentTheme: state => state.config.currentTheme,
+            theme: state => state.config.theme,
         }),
         ...mapGetters('projects', {
             getProjectLists: 'sortProjectListByTimestamp',
@@ -98,6 +188,7 @@ export default {
         }),
         ...mapGetters('config', {
             currentLang: 'currentLang',
+            themeVars: 'themeVars',
         })
     },
     methods: {
@@ -160,7 +251,7 @@ export default {
 					if(res.status === 204) {
 						this.$notify({
                             title: `${this.currentLang.message.success}`,
-                            message: `${payload.name} ${this.currengLang.message.createSuccess}`,
+                            message: `${payload.name} ${this.currentLang.message.createSuccess}`,
                             type: 'success',
 							duration: 2000,
 							offset: 50
@@ -184,7 +275,14 @@ export default {
 				.finally(() => {
 					this.$store.dispatch('projects/finishCreate', payload.id);
 				})
-		  },
+          },
+        toggleThemeConfig() {
+            this.isThemeConfigOpen = !this.isThemeConfigOpen;
+            this.$store.dispatch('config/toggleThemeConfigModal');
+        },
+        selectTheme(name) {
+            this.$store.dispatch('config/setTheme', name);
+        },
     }
 }
 </script>
@@ -198,11 +296,11 @@ export default {
     height: 100%;
     width: 100%;
 
-    background-color: $white;
-    color: $almost-black;
-    fill: $almost-black;
+    background-color: var(--nav__backgroundColor);
+    color: var(--nav__color);
+    fill: var(--nav__color);
 
-    border-bottom: 1px solid $almost-gray;
+    // border-bottom: 1px solid $almost-gray;
 
     &__left {
         display: flex;
@@ -226,7 +324,7 @@ export default {
             border-top-left-radius: 0 !important;
             border-bottom-left-radius: 0 !important;
 
-            color: $gray;
+            color: $white;
         }
         &--left-button {
             margin-right: 0 !important;
@@ -235,7 +333,7 @@ export default {
 
             // overwrite el-button padding so use px instead of rem
             padding: 9px 50px !important;
-            color: $gray;
+            color: $white;
         }
     }
 
@@ -279,9 +377,65 @@ export default {
             fill: $gray;
         }
     }
+
+    &__icon-wrapper {
+        padding: 0 1rem;
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+
+    &__github {
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        height: 100%;
+        color: $white;
+        background-color: $almost-black;
+        padding: .3rem 1rem;
+        font-weight: bold;
+        text-decoration:none;
+
+        cursor: pointer;
+    }
+
+    &__github-icon {
+        height: 1.5rem;
+        width: 1.5rem;
+
+        border-radius: 50%;
+
+        margin-right: .5rem;
+    }
+}
+
+.theme-lists {
+    width: 100%;
+
+    &__indicator {
+        height: 16px;
+        width: 16px;
+        border: 1px solid $gray;
+        border-radius: 50%;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: .5rem 0;
+    }
 }
 
 /deep/ .el-autocomplete-suggestion {
     box-shadow: unset;
 }
+
+
 </style>

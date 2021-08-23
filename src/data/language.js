@@ -46,7 +46,9 @@ export default {
             updateFail: "更新失败，请重试",
             removeSuccess: "已删除",
             removeFail: "删除失败，请重试",
-            cannotFind: "找不到项目，请确认项目名称并重试"
+            cannotFind: "找不到项目，请确认项目名称并重试",
+            saveLayoutSuccess: "已成功上传",
+            saveLayoutFail: "上传失败，请重试",
         },
         explore: "发现",
     },
@@ -97,7 +99,9 @@ export default {
             updateFail: "update failed, please try again",
             removeSuccess: "has been removed",
             removeFail: "remove failed, please try again",
-            cannotFind: "Sorry, cannot find the project, pelase confirm the project name"
+            cannotFind: "Sorry, cannot find the project, pelase confirm the project name",
+            saveLayoutSuccess: "has beed saved",
+            saveLayoutFail: "save failed, please try again",
         },
         explore: "Explore",
     },

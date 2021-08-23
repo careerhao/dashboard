@@ -14,7 +14,7 @@ export const projectList = {
     },
     {
         id: '00000000-0000-0000-0000-000000000002',
-        name: 'Prject3',
+        name: 'Project3',
         description: '',
         timestamp: '1528779241000',
     },

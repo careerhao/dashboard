@@ -31,7 +31,7 @@
                                 >
                                     <chart-card 
                                         :name="chart.name" 
-                                        :imageurl="chart.thumburl"
+                                        :imageurl="darkCharts ? chart.darkThumburl : chart.thumburl"
                                     />
                                 </div>
                             </el-menu-item>
@@ -75,7 +75,15 @@
                             </el-switch>
                         </div>
                         <div class="project__feature-items">
-                            <el-button plain size="small">{{ currentLang.save }}</el-button>   
+                            <el-button 
+                                type="primary" 
+                                class="button--overwrite button-primary--overwrite" 
+                                :loading="isSaving" 
+                                size="small" 
+                                @click.native="saveLayout"
+                            >
+                                {{ currentLang.save }}
+                            </el-button>   
                         </div>
                     </div>
                 </div>
@@ -129,8 +137,19 @@
                 <span> {{ currentLang.removeModal.message }} </span>
                 <strong><label class="confirm-modal__warning">{{ `${removingItemName} ?` }}</label></strong>
                 <span slot="footer" class="dialog-footer">
-                    <el-button type="primary"  @click.native="cancelRemove">{{ currentLang.cancel }}</el-button>
-                    <el-button class="button-plain--overwrite" @click.native="removeChart">{{ currentLang.confirm }}</el-button>
+                    <el-button 
+                        type="plain"  
+                        @click.native="cancelRemove"
+                    >
+                        {{ currentLang.cancel }}
+                    </el-button>
+                    <el-button 
+                        type="primary" 
+                        class="button-plain--overwrite" 
+                        @click.native="removeChart"
+                    >
+                        {{ currentLang.confirm }}
+                    </el-button>
                 </span>
         </el-dialog>
 
@@ -216,6 +235,7 @@ export default {
             removingItem: null,
             editingChart: {},
             isProjectNameEditiable: false,
+            isSaving: false,
         };
     },
     watch: {
@@ -260,7 +280,6 @@ export default {
                     (res && res.chartOptions) ? this.chartOptions = res.chartOptions : this.chartOptions;
                     (res && res.name) ? this.projectName = res.name : this.projectName = 'Created Project';
                     (res && res.isDarkCharts !== undefined) ? this.darkCharts = res.isDarkCharts : false;
-                    console.log(res.isDarkCharts)
                     this.form.editingProjectName = this.projectName;
                     this.$store.dispatch('currentProject/setCurrentProject', res)
                 }, err => {
@@ -464,6 +483,49 @@ export default {
         },
         darkChartsToggle() {
             this.darkCharts = !this.darkCharts;
+        },
+        saveLayout() {
+            this.isSaving = true;
+            projectServices
+                .saveProject({
+                    projectId: this.$route.params.id,
+                    body: {
+                        layout: this.layout,
+                        isDarkCharts: this.isDarkCharts,
+                    },
+                })
+                .then(res => {
+                    if(res.status === 204) {
+                        this.$notify({
+                            title: `${this.currentLang.message.success}`,
+                            message: `${this.projectName} ${this.currentLang.message.saveLayoutSuccess}`,
+                            type: 'success',
+                            duration: 2000,
+                            offset: 50
+                        });
+                        this.$store.dispatch('projects/modifyProjectInfo', {
+                            projectId: this.$route.params.id,
+                            data: {
+                                layout: this.layout,
+                                isDarkCharts: this.darkCharts,
+                                timestamp: Date.parse(new Date()),
+                            }
+                        });
+                    } else {
+                        // for cannot catch err
+                    }
+                })
+                .catch(err => {
+                    this.$notify.error({
+                        title: `${this.currentLang.message.error}`,
+                        message: `${this.projectName} ${this.currentLang.message.saveLayoutFail}`,
+                        duration: 0,
+                        offset: 50
+                    });
+
+                    throw new Error(err);
+                })
+                .finally(() => this.isSaving = false);
         }
     }
 }
@@ -557,7 +619,7 @@ export default {
         background-color: transparent;
 
         &--dark {
-            background-color: $dark-chart;
+            background-color: $body-dark;
         }
     }
 
@@ -573,15 +635,20 @@ export default {
 
 .project-aside, .project-container {
     height: 100%;
+
+    background-color: var(--app__backgroundColor);
 }
 .project-menu {
     overflow: auto;
     height: 100%;
     padding-bottom: 1rem;
+
+    border: 0;
+
+    background-color: var(--nav__backgroundColor);
 }
 
 .project-aside {
-    border-top: 1px solid $almost-gray;
     overflow: hidden;
 }
 
@@ -593,12 +660,14 @@ export default {
 .vue-grid-layout {
     min-height: 30rem;
     border: 1px dashed $gray;
+    border-radius: $border-radius;
     touch-action: none;
 }
 // Items class
 .vue-grid-item:not(.vue-grid-placeholder) {
     background: $white;
-    border: 1px solid $almost-gray;
+    // border: 1px solid $almost-gray;
+    border-radius: $border-radius;
 }
 
 .vue-grid-item .resizing {
@@ -643,6 +712,10 @@ export default {
 
 /deep/ .el-menu-item, .el-menu--inline {
     min-width: 170px !important;
+}
+
+/deep/ .el-dropdown-menu, .el-popper {
+    background-color: black !important;
 }
 
 /deep/ .el-input__inner {
