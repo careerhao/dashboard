@@ -60,9 +60,10 @@ Some packages taking a lot of resources(even by dynamic import), so we are using
 :heavy_check_mark: ~~Drop down project list on the top bar~~  
 :heavy_check_mark: ~~State management, like loading/creating/editing~~  
 
-:heavy_minus_sign: Tools on project page like Save/Theme Switch/Preview  
-:heavy_minus_sign: Multi-language support  
-:heavy_minus_sign: More sharable css variables for theme  
+:heavy_check_mark: ~~Tools on project page like Save/Theme Switch/Preview~~  
+:heavy_check_mark: ~~Multi-language support~~  
+:heavy_check_mark: ~~More sharable css variables for theme~~  
+
 :heavy_minus_sign: Admin tool on the top bar  
 :heavy_minus_sign: Auth & user role system  
 
@@ -73,7 +74,6 @@ Some packages taking a lot of resources(even by dynamic import), so we are using
 :heavy_minus_sign: Real-time charts update for charts (Depend on requirements)  
 :heavy_minus_sign: Github CI/CD (Host by other cloud platform through docker if possible)  
 :heavy_minus_sign: Unit and e2e tests  
-:heavy_minus_sign: REFACTOR  
 
 :x: Mobile friendly  
 
