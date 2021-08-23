@@ -34,7 +34,6 @@
                     <el-dropdown-item 
                         icon="el-icon-delete" 
                         class="el-dropdown-items--danger" 
-                        divided
                         @click.native="remove"
                     >
                         {{ currentLang.remove }}

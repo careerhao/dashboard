@@ -1,0 +1,9 @@
+@import '@/assets/modules/_all';
+
+.el-card {
+    border: 0 !important;
+    border-radius: $border-radius !important;
+    background-color: var(--nav__backgroundColor) !important;
+
+    color: var(--label__color) !important;
+}

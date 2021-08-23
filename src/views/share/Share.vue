@@ -50,7 +50,6 @@ export default {
         Chart,
     },
     watch: {
-        // 如果路由有变化，会再次执行该方法
         '$route': 'fetchData'
     },
     data() {
@@ -89,7 +88,7 @@ export default {
 
 .share {
     &--dark {
-        background-color: $dark-chart;
+        background-color: $body-dark;
     }
     &__items {
         &--dark {
@@ -106,6 +105,7 @@ export default {
 // Items class
 .vue-grid-item:not(.vue-grid-placeholder) {
     background: $white;
+    border-radius: $border-radius;
 }
 
 .vue-grid-item {

@@ -90,5 +90,16 @@ export default {
                 log.requestReceive('Project deleted with no content')
             }, 2000);
         })
+    },
+    saveProject({projectId, body}) {
+        // return api.put(`projects/${projectId}`)
+        log.requestSend(`POST ${JSON.stringify(body)} to endpoint: endpoint_address/${projectId}`)
+        
+        return new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve({status:204})
+                log.requestReceive(`Response for POST: ${JSON.stringify({status:204})}`)
+            }, 2000)
+        })
     }
 };

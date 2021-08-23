@@ -2,11 +2,10 @@
 
 //overwrite el-input related component styles
 .el-input__inner{
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    background-color: transparent;
-    border-radius: unset;
+    border: 0 !important;
+    background-color: var(--app__backgroundColor);
+    border-radius: $border-radius;
+    color: $gray;
 
     &:focus {
         border-color: $almost-black
@@ -18,13 +17,16 @@
 }
 
 .el-textarea__inner {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    background-color: transparent;
-    border-radius: unset;
+    border: 0 !important;
+    background-color: var(--app__backgroundColor);
+    border-radius: $border-radius;
+    color: $gray;
 
     &:focus {
         border-color: $almost-black
     }
+}
+
+.el-input__count {
+    background-color: var(--app__backgroundColor) !important;
 }
